@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SollawerGES.Components
 {
-    public static class Components
+    public static class Lists
     {
         private static List<Entities.Point> points;
         private static List<Entities.Rectengle> positionBoxes;

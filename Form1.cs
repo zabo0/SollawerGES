@@ -3,6 +3,7 @@ using SollawerGES.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace SollawerGES
         public Form1()
         {
             InitializeComponent();
-            Components.Components.initializeComponents();
+            Components.Lists.initializeComponents();
 
             // Panelin mouse wheel eventini manuel olarak ekle
             panel_drawingBig.MouseWheel += Panel_DrawingBig_MouseWheel;
@@ -104,38 +105,95 @@ namespace SollawerGES
 
         private void createPanels()
         {
-            Components.Components.Panels = Panels.createAllPanel();
+            Components.Lists.Panels = Panels.createAllPanel();
         }
         private void createAsiks()
         {
-            Components.Components.AsiksZ = Asiks.createAsiks_Z(Components.Components.Panels.OrderBy(d => d.ID).First().StartPos, Components.Components.Panels.OrderBy(d => d.ID).Last().EndPos);
-            Components.Components.AsiksW = Asiks.createAsiks_W(Components.Components.Panels);
+            Components.Lists.AsiksZ = Asiks.createAsiks_Z(Components.Lists.Panels.OrderBy(d => d.ID).First().StartPos, Components.Lists.Panels.OrderBy(d => d.ID).Last().EndPos);
+            Components.Lists.AsiksW = Asiks.createAsiks_W(Components.Lists.Panels);
         }
 
         private void createProfiles()
         {
-            Components.Components.Profiles = Profiles.createAllProfiles(Components.Components.AsiksW, Components.Components.AsiksZ);
+            Components.Lists.Profiles = Profiles.createCenterProfile(6000);
+
+            double length = 6000;
+            int i = 0;
+
+            while (true)
+            {
+                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "right");
+                if(newProfile == null)
+                {
+                    break;
+                }
+
+                if (Components.Profiles.conflictControl(newProfile.EndPos.X))
+                {
+                    foreach(Entities.Rectengle profile in Components.Lists.Profiles.ToList())
+                    {
+                        if(profile.ID > 0)
+                        {
+                            Components.Lists.Profiles.Remove(profile);
+                        }
+                    }
+                    length -= 10;
+                    i = 0;
+                    continue;
+                }
+                Components.Lists.Profiles.Add(newProfile);
+                i++;
+            }
+
+            length = 6000;
+            i = 0;
+
+            while (true)
+            {
+                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "left");
+                if (newProfile == null)
+                {
+                    break;
+                }
+
+                if (Components.Profiles.conflictControl(newProfile.StartPos.X))
+                {
+                    foreach (Entities.Rectengle profile in Components.Lists.Profiles.ToList())
+                    {
+                        if (profile.ID < 0)
+                        {
+                            Components.Lists.Profiles.Remove(profile);
+                        }
+                    }
+                    length -= 10;
+                    i = 0;
+                    continue;
+                }
+                Components.Lists.Profiles.Add(newProfile);
+                i--;
+            }
+
         }
 
         private void createAksBirls()
         {
-            Components.Components.AksBirls = AksBirls.createAksBirls(Components.Components.Profiles);
+            Components.Lists.AksBirls = AksBirls.createAksBirls(Components.Lists.Profiles);
         }
 
         private void createMafsals()
         {
-            Components.Components.Mafsals = Mafsals.createAllMafsals();
+            Components.Lists.Mafsals = Mafsals.createAllMafsals();
         }
 
         private void createDireks()
         {
-            Components.Components.CenterDireks = Direks.createCenterDireks(Components.Components.Mafsals);
-            Components.Components.SideDireks = Direks.createSideDireks(Components.Components.Mafsals);
+            Components.Lists.CenterDireks = Direks.createCenterDireks(Components.Lists.Mafsals);
+            Components.Lists.SideDireks = Direks.createSideDireks(Components.Lists.Mafsals);
         }
 
         private void drawPositionBox()
         {
-            Components.Components.PositionBoxes.Clear();
+            Components.Lists.PositionBoxes.Clear();
 
             int positionBoxID = 0;
             Vector2 cPos = new Vector2(-Origins.MainOrigin.Position.X,0);
@@ -143,22 +201,22 @@ namespace SollawerGES
             double positionBoxHeight = (double)panel_drawingBig.Height;
             Entities.Rectengle positionBox = new Entities.Rectengle(positionBoxID, positionBoxWidht.toMM(UnitConverter.PrimaryScale), positionBoxHeight.toMM(UnitConverter.PrimaryScale), cPos);
 
-            Components.Components.PositionBoxes.Add(positionBox);
+            Components.Lists.PositionBoxes.Add(positionBox);
         }
         private void showDatas()
         {
             string dataToShow = "";
             string dataToShow2 = "";
 
-            dataToShow += "Panel: " + Components.Components.Panels.Count.ToString() + Environment.NewLine;
-            dataToShow += "Z Asiks: " + Components.Components.AsiksZ.Count.ToString() + Environment.NewLine;
-            dataToShow += "W Asiks: " + Components.Components.AsiksW.Count.ToString() + Environment.NewLine;
-            dataToShow += "AksBirls: " + Components.Components.AksBirls.Count.ToString() + Environment.NewLine;
-            dataToShow += "Mafsals: " + Components.Components.Mafsals.Count.ToString() + Environment.NewLine;
-            dataToShow += "Center Direks: " + Components.Components.CenterDireks.Count.ToString() + Environment.NewLine;
-            dataToShow += "Side Direks: " + Components.Components.SideDireks.Count.ToString() + Environment.NewLine;
-            dataToShow += "Profile: " + Components.Components.Profiles.Count.ToString() + Environment.NewLine;
-            foreach (Entities.Rectengle profile in Components.Components.Profiles.OrderBy(d => d.ID))
+            dataToShow += "Panel: " + Components.Lists.Panels.Count.ToString() + Environment.NewLine;
+            dataToShow += "Z Asiks: " + Components.Lists.AsiksZ.Count.ToString() + Environment.NewLine;
+            dataToShow += "W Asiks: " + Components.Lists.AsiksW.Count.ToString() + Environment.NewLine;
+            dataToShow += "AksBirls: " + Components.Lists.AksBirls.Count.ToString() + Environment.NewLine;
+            dataToShow += "Mafsals: " + Components.Lists.Mafsals.Count.ToString() + Environment.NewLine;
+            dataToShow += "Center Direks: " + Components.Lists.CenterDireks.Count.ToString() + Environment.NewLine;
+            dataToShow += "Side Direks: " + Components.Lists.SideDireks.Count.ToString() + Environment.NewLine;
+            dataToShow += "Profile: " + Components.Lists.Profiles.Count.ToString() + Environment.NewLine;
+            foreach (Entities.Rectengle profile in Components.Lists.Profiles.OrderBy(d => d.ID))
             {
                 dataToShow2 += "   " + profile.ID + ": " + profile.Width + " / ";
             }
@@ -175,58 +233,58 @@ namespace SollawerGES
 
             e.Graphics.DrawPoint(new Pen(Color.Red, 2), Origins.MainOrigin, UnitConverter.PrimaryScale);
 
-            if (Components.Components.Panels.Count > 0 && checkBox_showPanel.Checked)
+            if (Components.Lists.Panels.Count > 0 && checkBox_showPanel.Checked)
             {
-                foreach (Entities.Rectengle panel in Components.Components.Panels)
+                foreach (Entities.Rectengle panel in Components.Lists.Panels)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.AsiksZ.Count > 0 && checkBox_showAsikZ.Checked)
+            if(Components.Lists.AsiksZ.Count > 0 && checkBox_showAsikZ.Checked)
             {
-                foreach(Entities.Rectengle asikZ in Components.Components.AsiksZ)
+                foreach(Entities.Rectengle asikZ in Components.Lists.AsiksZ)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.AsiksW.Count > 0 && checkBox_showAsikW.Checked)
+            if(Components.Lists.AsiksW.Count > 0 && checkBox_showAsikW.Checked)
             {
-                foreach(Entities.Rectengle asikW in Components.Components.AsiksW)
+                foreach(Entities.Rectengle asikW in Components.Lists.AsiksW)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.Profiles.Count > 0 && checkBox_showProfile.Checked)
+            if(Components.Lists.Profiles.Count > 0 && checkBox_showProfile.Checked)
             {
-                foreach(Entities.Rectengle profile in Components.Components.Profiles)
+                foreach(Entities.Rectengle profile in Components.Lists.Profiles)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
+            if(Components.Lists.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
             {
-                foreach(Entities.Rectengle aksBirl in Components.Components.AksBirls)
+                foreach(Entities.Rectengle aksBirl in Components.Lists.AksBirls)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.Mafsals.Count > 0 && checkBox_showMafsal.Checked)
+            if(Components.Lists.Mafsals.Count > 0 && checkBox_showMafsal.Checked)
             {
-                foreach(Entities.Rectengle mafsal in Components.Components.Mafsals)
+                foreach(Entities.Rectengle mafsal in Components.Lists.Mafsals)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.PrimaryScale, false);
                 }
             }
-            if(Components.Components.CenterDireks.Count  > 0 && checkBox_showCenterDirek.Checked)
+            if(Components.Lists.CenterDireks.Count  > 0 && checkBox_showCenterDirek.Checked)
             {
-                foreach(Entities.Rectengle centerDirek in Components.Components.CenterDireks)
+                foreach(Entities.Rectengle centerDirek in Components.Lists.CenterDireks)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.PrimaryScale, false);
                 }
             }
-            if (Components.Components.SideDireks.Count > 0 && checkBox_showSideDirek.Checked)
+            if (Components.Lists.SideDireks.Count > 0 && checkBox_showSideDirek.Checked)
             {
-                foreach (Entities.Rectengle sideDirek in Components.Components.SideDireks)
+                foreach (Entities.Rectengle sideDirek in Components.Lists.SideDireks)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.PrimaryScale, false);
                 }
@@ -238,81 +296,81 @@ namespace SollawerGES
         {
             e.Graphics.SetParameters(panel_drawingSmall.Height, panel_drawingSmall.Width);
 
-            if (Components.Components.Panels.Count > 0 && checkBox_showPanel.Checked)
+            if (Components.Lists.Panels.Count > 0 && checkBox_showPanel.Checked)
             {
-                foreach (Entities.Rectengle panel in Components.Components.Panels)
+                foreach (Entities.Rectengle panel in Components.Lists.Panels)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.SecondaryScale, false);
                     if(changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.AsiksZ.Count > 0 && checkBox_showAsikZ.Checked)
+            if (Components.Lists.AsiksZ.Count > 0 && checkBox_showAsikZ.Checked)
             {
-                foreach (Entities.Rectengle asikZ in Components.Components.AsiksZ)
+                foreach (Entities.Rectengle asikZ in Components.Lists.AsiksZ)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.AsiksW.Count > 0 && checkBox_showAsikW.Checked)
+            if (Components.Lists.AsiksW.Count > 0 && checkBox_showAsikW.Checked)
             {
-                foreach (Entities.Rectengle asikW in Components.Components.AsiksW)
+                foreach (Entities.Rectengle asikW in Components.Lists.AsiksW)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.Profiles.Count > 0 && checkBox_showProfile.Checked)
+            if (Components.Lists.Profiles.Count > 0 && checkBox_showProfile.Checked)
             {
-                foreach (Entities.Rectengle profile in Components.Components.Profiles)
+                foreach (Entities.Rectengle profile in Components.Lists.Profiles)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if(Components.Components.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
+            if(Components.Lists.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
             {
-                foreach(Entities.Rectengle aksBirl in Components.Components.AksBirls)
+                foreach(Entities.Rectengle aksBirl in Components.Lists.AksBirls)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.Mafsals.Count > 0 && checkBox_showMafsal.Checked)
+            if (Components.Lists.Mafsals.Count > 0 && checkBox_showMafsal.Checked)
             {
-                foreach (Entities.Rectengle mafsal in Components.Components.Mafsals)
+                foreach (Entities.Rectengle mafsal in Components.Lists.Mafsals)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.CenterDireks.Count > 0 && checkBox_showCenterDirek.Checked)
+            if (Components.Lists.CenterDireks.Count > 0 && checkBox_showCenterDirek.Checked)
             {
-                foreach (Entities.Rectengle centerDirek in Components.Components.CenterDireks)
+                foreach (Entities.Rectengle centerDirek in Components.Lists.CenterDireks)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if (Components.Components.SideDireks.Count > 0 && checkBox_showSideDirek.Checked)
+            if (Components.Lists.SideDireks.Count > 0 && checkBox_showSideDirek.Checked)
             {
-                foreach (Entities.Rectengle sideDirek in Components.Components.SideDireks)
+                foreach (Entities.Rectengle sideDirek in Components.Lists.SideDireks)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.SecondaryScale, false);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
             }
-            if(Components.Components.PositionBoxes.Count > 0)
+            if(Components.Lists.PositionBoxes.Count > 0)
             {
-                foreach(Entities.Rectengle positionBox in Components.Components.PositionBoxes)
+                foreach(Entities.Rectengle positionBox in Components.Lists.PositionBoxes)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Black, 2), positionBox, UnitConverter.SecondaryScale, false);
                 }
@@ -409,15 +467,15 @@ namespace SollawerGES
         {
             Origins.MainOrigin = new Entities.Point(1, new Vector2(0, 0));
 
-            Components.Components.Panels.Clear();
-            Components.Components.AsiksZ.Clear();
-            Components.Components.AsiksW.Clear();
-            Components.Components.Profiles.Clear();
-            Components.Components.AksBirls.Clear();
-            Components.Components.Mafsals.Clear();
-            Components.Components.CenterDireks.Clear();
-            Components.Components.SideDireks.Clear();
-            Components.Components.PositionBoxes.Clear();
+            Components.Lists.Panels.Clear();
+            Components.Lists.AsiksZ.Clear();
+            Components.Lists.AsiksW.Clear();
+            Components.Lists.Profiles.Clear();
+            Components.Lists.AksBirls.Clear();
+            Components.Lists.Mafsals.Clear();
+            Components.Lists.CenterDireks.Clear();
+            Components.Lists.SideDireks.Clear();
+            Components.Lists.PositionBoxes.Clear();
 
             changed = true;
             updateFrame();

@@ -112,7 +112,7 @@
   <ItemGroup>
     <Compile Include="Components\AksBirls.cs" />
     <Compile Include="Components\Asiks.cs" />
-    <Compile Include="Components\Components.cs" />
+    <Compile Include="Components\Lists.cs" />
     <Compile Include="Components\Direks.cs" />
     <Compile Include="Components\Mafsals.cs" />
     <Compile Include="Components\Origins.cs" />

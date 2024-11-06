@@ -1,4 +1,4 @@
-<Animation><!true>
+<Animation><!false>
 <AnimationDelayTime><!15>;
 <Panel><!1134><!2269><!10><!45>;
 <ZProfilAsik><!60><!1300>;

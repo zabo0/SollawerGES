@@ -42,7 +42,16 @@
             this.label_locationBigMM = new System.Windows.Forms.Label();
             this.label_locationBigPX = new System.Windows.Forms.Label();
             this.panel_content = new System.Windows.Forms.Panel();
+            this.checkBox_showSideDirek = new System.Windows.Forms.CheckBox();
+            this.checkBox_showCenterDirek = new System.Windows.Forms.CheckBox();
+            this.checkBox_showMafsal = new System.Windows.Forms.CheckBox();
+            this.checkBox_showAksBirl = new System.Windows.Forms.CheckBox();
+            this.checkBox_showProfile = new System.Windows.Forms.CheckBox();
+            this.checkBox_showAsikW = new System.Windows.Forms.CheckBox();
+            this.checkBox_showAsikZ = new System.Windows.Forms.CheckBox();
+            this.checkBox_showPanel = new System.Windows.Forms.CheckBox();
             this.button_clear = new System.Windows.Forms.Button();
+            this.label_info3 = new System.Windows.Forms.Label();
             this.label_info2 = new System.Windows.Forms.Label();
             this.button_applyPanelCount = new System.Windows.Forms.Button();
             this.label_deviceDPI = new System.Windows.Forms.Label();
@@ -52,15 +61,6 @@
             this.button_configureRealDPI = new System.Windows.Forms.Button();
             this.label_info = new System.Windows.Forms.Label();
             this.label_locationGlobalBigPX = new System.Windows.Forms.Label();
-            this.label_info3 = new System.Windows.Forms.Label();
-            this.checkBox_showPanel = new System.Windows.Forms.CheckBox();
-            this.checkBox_showAsikZ = new System.Windows.Forms.CheckBox();
-            this.checkBox_showAsikW = new System.Windows.Forms.CheckBox();
-            this.checkBox_showProfile = new System.Windows.Forms.CheckBox();
-            this.checkBox_showAksBirl = new System.Windows.Forms.CheckBox();
-            this.checkBox_showMafsal = new System.Windows.Forms.CheckBox();
-            this.checkBox_showCenterDirek = new System.Windows.Forms.CheckBox();
-            this.checkBox_showSideDirek = new System.Windows.Forms.CheckBox();
             this.panel_header.SuspendLayout();
             this.panel_drawingSmall.SuspendLayout();
             this.panel_drawingBig.SuspendLayout();
@@ -248,6 +248,118 @@
             this.panel_content.Size = new System.Drawing.Size(1260, 140);
             this.panel_content.TabIndex = 4;
             // 
+            // checkBox_showSideDirek
+            // 
+            this.checkBox_showSideDirek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showSideDirek.AutoSize = true;
+            this.checkBox_showSideDirek.Checked = true;
+            this.checkBox_showSideDirek.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showSideDirek.Location = new System.Drawing.Point(1165, 72);
+            this.checkBox_showSideDirek.Name = "checkBox_showSideDirek";
+            this.checkBox_showSideDirek.Size = new System.Drawing.Size(75, 17);
+            this.checkBox_showSideDirek.TabIndex = 21;
+            this.checkBox_showSideDirek.Text = "Side Direk";
+            this.checkBox_showSideDirek.UseVisualStyleBackColor = true;
+            this.checkBox_showSideDirek.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showCenterDirek
+            // 
+            this.checkBox_showCenterDirek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showCenterDirek.AutoSize = true;
+            this.checkBox_showCenterDirek.Checked = true;
+            this.checkBox_showCenterDirek.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showCenterDirek.Location = new System.Drawing.Point(1165, 49);
+            this.checkBox_showCenterDirek.Name = "checkBox_showCenterDirek";
+            this.checkBox_showCenterDirek.Size = new System.Drawing.Size(85, 17);
+            this.checkBox_showCenterDirek.TabIndex = 21;
+            this.checkBox_showCenterDirek.Text = "Center Direk";
+            this.checkBox_showCenterDirek.UseVisualStyleBackColor = true;
+            this.checkBox_showCenterDirek.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showMafsal
+            // 
+            this.checkBox_showMafsal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showMafsal.AutoSize = true;
+            this.checkBox_showMafsal.Checked = true;
+            this.checkBox_showMafsal.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showMafsal.Location = new System.Drawing.Point(1165, 26);
+            this.checkBox_showMafsal.Name = "checkBox_showMafsal";
+            this.checkBox_showMafsal.Size = new System.Drawing.Size(57, 17);
+            this.checkBox_showMafsal.TabIndex = 21;
+            this.checkBox_showMafsal.Text = "Mafsal";
+            this.checkBox_showMafsal.UseVisualStyleBackColor = true;
+            this.checkBox_showMafsal.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showAksBirl
+            // 
+            this.checkBox_showAksBirl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showAksBirl.AutoSize = true;
+            this.checkBox_showAksBirl.Checked = true;
+            this.checkBox_showAksBirl.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showAksBirl.Location = new System.Drawing.Point(1165, 3);
+            this.checkBox_showAksBirl.Name = "checkBox_showAksBirl";
+            this.checkBox_showAksBirl.Size = new System.Drawing.Size(90, 17);
+            this.checkBox_showAksBirl.TabIndex = 21;
+            this.checkBox_showAksBirl.Text = "Aks Birlestirici";
+            this.checkBox_showAksBirl.UseVisualStyleBackColor = true;
+            this.checkBox_showAksBirl.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showProfile
+            // 
+            this.checkBox_showProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showProfile.AutoSize = true;
+            this.checkBox_showProfile.Checked = true;
+            this.checkBox_showProfile.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showProfile.Location = new System.Drawing.Point(1051, 72);
+            this.checkBox_showProfile.Name = "checkBox_showProfile";
+            this.checkBox_showProfile.Size = new System.Drawing.Size(55, 17);
+            this.checkBox_showProfile.TabIndex = 21;
+            this.checkBox_showProfile.Text = "Profile";
+            this.checkBox_showProfile.UseVisualStyleBackColor = true;
+            this.checkBox_showProfile.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showAsikW
+            // 
+            this.checkBox_showAsikW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showAsikW.AutoSize = true;
+            this.checkBox_showAsikW.Checked = true;
+            this.checkBox_showAsikW.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showAsikW.Location = new System.Drawing.Point(1051, 49);
+            this.checkBox_showAsikW.Name = "checkBox_showAsikW";
+            this.checkBox_showAsikW.Size = new System.Drawing.Size(60, 17);
+            this.checkBox_showAsikW.TabIndex = 21;
+            this.checkBox_showAsikW.Text = "Asik W";
+            this.checkBox_showAsikW.UseVisualStyleBackColor = true;
+            this.checkBox_showAsikW.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showAsikZ
+            // 
+            this.checkBox_showAsikZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showAsikZ.AutoSize = true;
+            this.checkBox_showAsikZ.Checked = true;
+            this.checkBox_showAsikZ.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showAsikZ.Location = new System.Drawing.Point(1051, 26);
+            this.checkBox_showAsikZ.Name = "checkBox_showAsikZ";
+            this.checkBox_showAsikZ.Size = new System.Drawing.Size(56, 17);
+            this.checkBox_showAsikZ.TabIndex = 21;
+            this.checkBox_showAsikZ.Text = "Asik Z";
+            this.checkBox_showAsikZ.UseVisualStyleBackColor = true;
+            this.checkBox_showAsikZ.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showPanel
+            // 
+            this.checkBox_showPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showPanel.AutoSize = true;
+            this.checkBox_showPanel.Checked = true;
+            this.checkBox_showPanel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showPanel.Location = new System.Drawing.Point(1051, 3);
+            this.checkBox_showPanel.Name = "checkBox_showPanel";
+            this.checkBox_showPanel.Size = new System.Drawing.Size(53, 17);
+            this.checkBox_showPanel.TabIndex = 21;
+            this.checkBox_showPanel.Text = "Panel";
+            this.checkBox_showPanel.UseVisualStyleBackColor = true;
+            this.checkBox_showPanel.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
             // button_clear
             // 
             this.button_clear.Location = new System.Drawing.Point(109, 112);
@@ -257,6 +369,15 @@
             this.button_clear.Text = "Clear";
             this.button_clear.UseVisualStyleBackColor = true;
             this.button_clear.Click += new System.EventHandler(this.button_clear_Click);
+            // 
+            // label_info3
+            // 
+            this.label_info3.AutoSize = true;
+            this.label_info3.Location = new System.Drawing.Point(106, 0);
+            this.label_info3.Name = "label_info3";
+            this.label_info3.Size = new System.Drawing.Size(24, 13);
+            this.label_info3.TabIndex = 2;
+            this.label_info3.Text = "info";
             // 
             // label_info2
             // 
@@ -348,127 +469,6 @@
             this.label_locationGlobalBigPX.TabIndex = 15;
             this.label_locationGlobalBigPX.Text = "0 / 0 px";
             this.label_locationGlobalBigPX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label_info3
-            // 
-            this.label_info3.AutoSize = true;
-            this.label_info3.Location = new System.Drawing.Point(106, 0);
-            this.label_info3.Name = "label_info3";
-            this.label_info3.Size = new System.Drawing.Size(24, 13);
-            this.label_info3.TabIndex = 2;
-            this.label_info3.Text = "info";
-            // 
-            // checkBox_showPanel
-            // 
-            this.checkBox_showPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showPanel.AutoSize = true;
-            this.checkBox_showPanel.Checked = true;
-            this.checkBox_showPanel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showPanel.Location = new System.Drawing.Point(1051, 3);
-            this.checkBox_showPanel.Name = "checkBox_showPanel";
-            this.checkBox_showPanel.Size = new System.Drawing.Size(53, 17);
-            this.checkBox_showPanel.TabIndex = 21;
-            this.checkBox_showPanel.Text = "Panel";
-            this.checkBox_showPanel.UseVisualStyleBackColor = true;
-            this.checkBox_showPanel.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showAsikZ
-            // 
-            this.checkBox_showAsikZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showAsikZ.AutoSize = true;
-            this.checkBox_showAsikZ.Checked = true;
-            this.checkBox_showAsikZ.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showAsikZ.Location = new System.Drawing.Point(1051, 26);
-            this.checkBox_showAsikZ.Name = "checkBox_showAsikZ";
-            this.checkBox_showAsikZ.Size = new System.Drawing.Size(56, 17);
-            this.checkBox_showAsikZ.TabIndex = 21;
-            this.checkBox_showAsikZ.Text = "Asik Z";
-            this.checkBox_showAsikZ.UseVisualStyleBackColor = true;
-            this.checkBox_showAsikZ.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showAsikW
-            // 
-            this.checkBox_showAsikW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showAsikW.AutoSize = true;
-            this.checkBox_showAsikW.Checked = true;
-            this.checkBox_showAsikW.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showAsikW.Location = new System.Drawing.Point(1051, 49);
-            this.checkBox_showAsikW.Name = "checkBox_showAsikW";
-            this.checkBox_showAsikW.Size = new System.Drawing.Size(60, 17);
-            this.checkBox_showAsikW.TabIndex = 21;
-            this.checkBox_showAsikW.Text = "Asik W";
-            this.checkBox_showAsikW.UseVisualStyleBackColor = true;
-            this.checkBox_showAsikW.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showProfile
-            // 
-            this.checkBox_showProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showProfile.AutoSize = true;
-            this.checkBox_showProfile.Checked = true;
-            this.checkBox_showProfile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showProfile.Location = new System.Drawing.Point(1051, 72);
-            this.checkBox_showProfile.Name = "checkBox_showProfile";
-            this.checkBox_showProfile.Size = new System.Drawing.Size(55, 17);
-            this.checkBox_showProfile.TabIndex = 21;
-            this.checkBox_showProfile.Text = "Profile";
-            this.checkBox_showProfile.UseVisualStyleBackColor = true;
-            this.checkBox_showProfile.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showAksBirl
-            // 
-            this.checkBox_showAksBirl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showAksBirl.AutoSize = true;
-            this.checkBox_showAksBirl.Checked = true;
-            this.checkBox_showAksBirl.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showAksBirl.Location = new System.Drawing.Point(1165, 3);
-            this.checkBox_showAksBirl.Name = "checkBox_showAksBirl";
-            this.checkBox_showAksBirl.Size = new System.Drawing.Size(90, 17);
-            this.checkBox_showAksBirl.TabIndex = 21;
-            this.checkBox_showAksBirl.Text = "Aks Birlestirici";
-            this.checkBox_showAksBirl.UseVisualStyleBackColor = true;
-            this.checkBox_showAksBirl.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showMafsal
-            // 
-            this.checkBox_showMafsal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showMafsal.AutoSize = true;
-            this.checkBox_showMafsal.Checked = true;
-            this.checkBox_showMafsal.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showMafsal.Location = new System.Drawing.Point(1165, 26);
-            this.checkBox_showMafsal.Name = "checkBox_showMafsal";
-            this.checkBox_showMafsal.Size = new System.Drawing.Size(57, 17);
-            this.checkBox_showMafsal.TabIndex = 21;
-            this.checkBox_showMafsal.Text = "Mafsal";
-            this.checkBox_showMafsal.UseVisualStyleBackColor = true;
-            this.checkBox_showMafsal.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showCenterDirek
-            // 
-            this.checkBox_showCenterDirek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showCenterDirek.AutoSize = true;
-            this.checkBox_showCenterDirek.Checked = true;
-            this.checkBox_showCenterDirek.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showCenterDirek.Location = new System.Drawing.Point(1165, 49);
-            this.checkBox_showCenterDirek.Name = "checkBox_showCenterDirek";
-            this.checkBox_showCenterDirek.Size = new System.Drawing.Size(85, 17);
-            this.checkBox_showCenterDirek.TabIndex = 21;
-            this.checkBox_showCenterDirek.Text = "Center Direk";
-            this.checkBox_showCenterDirek.UseVisualStyleBackColor = true;
-            this.checkBox_showCenterDirek.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
-            // 
-            // checkBox_showSideDirek
-            // 
-            this.checkBox_showSideDirek.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox_showSideDirek.AutoSize = true;
-            this.checkBox_showSideDirek.Checked = true;
-            this.checkBox_showSideDirek.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showSideDirek.Location = new System.Drawing.Point(1165, 72);
-            this.checkBox_showSideDirek.Name = "checkBox_showSideDirek";
-            this.checkBox_showSideDirek.Size = new System.Drawing.Size(75, 17);
-            this.checkBox_showSideDirek.TabIndex = 21;
-            this.checkBox_showSideDirek.Text = "Side Direk";
-            this.checkBox_showSideDirek.UseVisualStyleBackColor = true;
-            this.checkBox_showSideDirek.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
             // 
             // Form1
             // 

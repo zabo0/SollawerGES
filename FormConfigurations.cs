@@ -110,7 +110,7 @@ namespace SollawerGES
             checkList.Add(checkBox_exportSideDirek.Checked);
 
 
-            PDFProcess pdfProcess = new PDFProcess("denemePDF", "C:\\Users\\scice\\Desktop\\sollawerGESPDF\\output.pdf", Components.Components.getComponentList(checkList));
+            PDFProcess pdfProcess = new PDFProcess("denemePDF", "C:\\Users\\scice\\Desktop\\sollawerGESPDF\\output.pdf", Components.Lists.getComponentList(checkList));
         }
     }
 }
