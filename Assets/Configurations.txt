@@ -1,0 +1,10 @@
+<Animation><!true>
+<AnimationDelayTime><!15>;
+<Panel><!1134><!2269><!10><!45>;
+<ZProfilAsik><!60><!1300>;
+<WProfilAsik><!80><!1300>;
+<Profil><!120><!20>;
+<AksBirlestirici><!320><!222>;
+<Mafsal><!76><!250><!230>;
+<Direk><!90><!2950>;
+
