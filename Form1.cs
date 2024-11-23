@@ -12,24 +12,21 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using static System.Windows.Forms.AxHost;
 
 namespace SollawerGES
 {
     public partial class Form1 : Form
     {
-        //private List<Entities.Point> points = new List<Entities.Point>();
-        //private List<Entities.Rectengle> positionBoxes = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> panels = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> asiksZ = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> asiksW = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> profiles = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> aksBirls = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> mafsals = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> centerDireks = new List<Entities.Rectengle>();
-        //private List<Entities.Rectengle> sideDireks = new List<Entities.Rectengle>();
+        private Vector2 currentGlobalMousePosition; // mouseun globaldeki konumu
+        private Vector2 currentMousePosition_MM = new Vector2(0, 0);
 
-        private Vector2 currentPosition;
+        private bool isMousePressed = false; // mouse basili mi degil mi
+        private Vector2 mousePressedPosition = new Vector2(0, 0);
+        private Vector2 mouseReleasedPosition = new Vector2(0, 0);
+
+        private bool isEditModeEnabled = false;
 
         private bool changed = false;
         private bool animation = false;
@@ -113,10 +110,51 @@ namespace SollawerGES
             Components.Lists.AsiksW = Asiks.createAsiks_W(Components.Lists.Panels);
         }
 
+        private void createCenterProfile()
+        {
+            Components.Lists.Profiles = Profiles.createCenterProfile();
+        }
+
+        private void createProfiles1()
+        {
+            Entities.Rectengle centerProfile = Components.Lists.Profiles.Find(d => d.ID == 0);
+
+            Components.Lists.Profiles.Clear();
+
+            Components.Lists.Profiles.Add(centerProfile);
+
+
+            double length = 6000;
+            int i = 0;
+
+            while (true)
+            {
+                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "right");
+                if (newProfile == null)
+                {
+                    break;
+                }
+                Components.Lists.Profiles.Add(newProfile);
+                i++;
+            }
+
+            length = 6000;
+            i = 0;
+
+            while (true)
+            {
+                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "left");
+                if (newProfile == null)
+                {
+                    break;
+                }
+                Components.Lists.Profiles.Add(newProfile);
+                i--;
+            }
+        }
+
         private void createProfiles()
         {
-            Components.Lists.Profiles = Profiles.createCenterProfile(6000);
-
             double length = 6000;
             int i = 0;
 
@@ -225,6 +263,7 @@ namespace SollawerGES
             label_info3.Text = dataToShow2;
         }
 
+
         #region EventHendlers
 
         private void panel_drawingBig_Paint(object sender, PaintEventArgs e)
@@ -258,7 +297,7 @@ namespace SollawerGES
             {
                 foreach(Entities.Rectengle profile in Components.Lists.Profiles)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.PrimaryScale, false);
+                    e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.PrimaryScale, true);
                 }
             }
             if(Components.Lists.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
@@ -380,10 +419,14 @@ namespace SollawerGES
 
         private void panel_drawingBig_MouseMove(object sender, MouseEventArgs e)
         {
-            currentPosition = new Vector2(e.Location);
-            label_locationBigMM.Text = string.Format("{0,0:F0} / {1,0:F0} mm", currentPosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X), Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentPosition.Y.toMM(UnitConverter.PrimaryScale)); //mm cinsinde yazdirir
-            label_locationBigPX.Text = string.Format("{0} / {1} px", currentPosition.X - (Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(UnitConverter.PrimaryScale)), Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(UnitConverter.PrimaryScale) - currentPosition.Y); //pixel cinsinde yazdirir
-            label_locationGlobalBigPX.Text = string.Format("{0} / {1} px", currentPosition.X, currentPosition.Y); //pixel cinsinde yazdirir
+            currentGlobalMousePosition = new Vector2(e.Location);
+            currentMousePosition_MM.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
+            currentMousePosition_MM.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
+
+            label_locationBigMM.Text = string.Format("{0,0:F0} / {1,0:F0} mm", currentMousePosition_MM.X, currentMousePosition_MM.Y); //mm cinsinde yazdirir
+            label_locationBigPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X - (Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(UnitConverter.PrimaryScale)), Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(UnitConverter.PrimaryScale) - currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
+            label_locationGlobalBigPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X, currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
+
         }
 
 
@@ -427,11 +470,13 @@ namespace SollawerGES
 
         private void panel_drawingSmall_MouseMove(object sender, MouseEventArgs e)
         {
-            currentPosition = new Vector2(e.Location);
-            label_locationSmallMM.Text = string.Format("{0,0:F0} / {1,0:F0} mm", currentPosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X), Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentPosition.Y.toMM(UnitConverter.PrimaryScale)); //mm cinsinde yazdirir
-            label_locationSmallPX.Text = string.Format("{0} / {1} px", currentPosition.X - (Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(UnitConverter.PrimaryScale)), Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(UnitConverter.PrimaryScale) - currentPosition.Y); //pixel cinsinde yazdirir
-            label_locationGlobalBigPX.Text = string.Format("{0} / {1} px", currentPosition.X, currentPosition.Y); //pixel cinsinde yazdirir
+            currentGlobalMousePosition = new Vector2(e.Location);
+            label_locationSmallMM.Text = string.Format("{0,0:F0} / {1,0:F0} mm", currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X), Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale)); //mm cinsinde yazdirir
+            label_locationSmallPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X - (Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(UnitConverter.PrimaryScale)), Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(UnitConverter.PrimaryScale) - currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
+            label_locationGlobalBigPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X, currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
+
         }
+
 
         private void panel_drawingSmall_MouseClick(object sender, MouseEventArgs e)
         {
@@ -451,7 +496,8 @@ namespace SollawerGES
 
             createPanels();
             createAsiks();
-            createProfiles();
+            createCenterProfile();
+            createProfiles1();
             createAksBirls();
             createMafsals();
             createDireks();
@@ -491,6 +537,79 @@ namespace SollawerGES
         private void showComponentEventHandler(object sender, EventArgs e)
         {
             updateFrame();
+        }
+
+
+
+        private void panel_drawingBig_MouseDown(object sender, MouseEventArgs e)
+        {
+            isMousePressed = true;
+            mousePressedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
+            mousePressedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
+
+        }
+
+        private void panel_drawingBig_MouseUp(object sender, MouseEventArgs e)
+        {
+            isMousePressed = false;
+            mouseReleasedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
+            mouseReleasedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
+
+        }
+
+        private void button_editMode_Click(object sender, EventArgs e)
+        {
+            if (isEditModeEnabled)
+            {
+                isEditModeEnabled = false;
+            }
+            else
+            {
+                isEditModeEnabled = true;
+            }
+        }
+
+
+        
+
+        private void panel_drawingBig_MouseClick(object sender, MouseEventArgs e)
+        {
+            mousePressedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
+            mousePressedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
+
+            label_infoEdit.Text = $"pressed location: {mousePressedPosition.X} - {mousePressedPosition.Y}";
+
+
+            if (Components.Lists.Profiles.Count > 0 && isEditModeEnabled)
+            {
+                foreach (Entities.Rectengle profile in Components.Lists.Profiles)
+                {
+                    double centerProfilStartX = profile.StartPos.X;
+                    double centerProfilEndX = profile.EndPos.X;
+                    double centerProfilTopX = profile.TopPos.Y;
+                    double centerProfilBottomX = profile.BottomPos.Y;
+
+                    if (centerProfilStartX <= mousePressedPosition.X && mousePressedPosition.X <= centerProfilEndX && centerProfilBottomX <= mousePressedPosition.Y && mousePressedPosition.Y <= centerProfilTopX)
+                    {
+                        profile.IsSelected = true;
+                    }
+                    else
+                    {
+                        profile.IsSelected = false;
+                    }
+                }
+
+
+                if (Components.Lists.Profiles.Find(d => d.IsSelected == true) != null)
+                {
+                    label_info.Text = $"selected component id: {Components.Lists.Profiles.Find(d => d.IsSelected == true).ID}";
+                }
+                else
+                {
+                    label_info.Text = $"selected component id: null";
+                }
+                updateFrame();
+            }
         }
 
         #endregion

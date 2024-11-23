@@ -70,12 +70,11 @@ namespace SollawerGES.Components
             return list;
         }
 
-        public static List<Entities.Rectengle> createCenterProfile(double length)
+        public static List<Entities.Rectengle> createCenterProfile()
         {
             List<Entities.Rectengle> list = new List<Entities.Rectengle>();
             int id = 0;
-            Entities.Rectengle cProfile = new Entities.Rectengle(id, length, height, new Vector2(0, 0));
-            cProfile = conflictControl(cProfile);
+            Entities.Rectengle cProfile = new Entities.Rectengle(id, 6000, height, new Vector2(0,0));
             list.Add(cProfile);
             return list;
         }
@@ -217,6 +216,21 @@ namespace SollawerGES.Components
                 return nProfile;
             }
             return null;
+        }
+
+
+        public static void updateProfiles(Entities.Rectengle editedProfile)
+        {
+            if(Components.Lists.Profiles == null)
+            {
+
+            }
+        }
+
+
+        public static void moveProfiles(int editedComponent, double newLenght, double newCenterPosition)
+        {
+
         }
 
         public static double Space

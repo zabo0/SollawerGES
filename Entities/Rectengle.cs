@@ -22,6 +22,8 @@ namespace SollawerGES.Entities
 
         private double thickness;
 
+        private bool isSelected = false;
+
         public Rectengle(int id, double width, double height, Vector2 cPos)
         {
             this.ID = id;
@@ -31,6 +33,11 @@ namespace SollawerGES.Entities
             this.Thickness = 0.0;
         }
 
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set { isSelected = value; }
+        }
 
         public double Thickness
         {

@@ -13,6 +13,7 @@ namespace SollawerGES.Utils
     {
         private static float Height;
         private static float Width;
+        private static Pen extPen = new Pen(Color.Gray, 1);
 
 
         public static void SetParameters(this System.Drawing.Graphics g, float height, float width)
@@ -65,7 +66,14 @@ namespace SollawerGES.Utils
                 g.DrawString(rectengle.ID.ToString(), font, solidBrush, (float)posX + 10, (float)posY - 50);
             }
 
-            g.DrawRectangle(pen, rect);
+            if (rectengle.IsSelected)
+            {
+                g.DrawRectangle(new Pen(Color.Gray, 1), rect);
+            }
+            else
+            {
+                g.DrawRectangle(pen, rect);
+            }
             g.ResetTransform();
         }
     }
