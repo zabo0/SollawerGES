@@ -118,6 +118,10 @@
     <Compile Include="Components\Origins.cs" />
     <Compile Include="Components\Panels.cs" />
     <Compile Include="Components\Profiles.cs" />
+    <Compile Include="Components\SelectionIndicators.cs" />
+    <Compile Include="Constraints\Constraint.cs" />
+    <Compile Include="Constraints\ConstraintDistanceRectPoint.cs" />
+    <Compile Include="Constraints\ConstraintSolver.cs" />
     <Compile Include="Entities\Point.cs" />
     <Compile Include="Entities\Rectengle.cs" />
     <Compile Include="Form1.cs">

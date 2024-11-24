@@ -1,4 +1,5 @@
 ﻿using SollawerGES.Components;
+using SollawerGES.Constraints;
 using SollawerGES.Utils;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,10 @@ namespace SollawerGES
         private bool changed = false;
         private bool animation = false;
         private int animationDelayTime;
+
+        private Vector2 selectedCenterPoint;
+        private Vector2 selectedStartPoint;
+        private Vector2 selectedEndPoint;
 
         public Form1()
         {
@@ -113,15 +118,21 @@ namespace SollawerGES
         private void createCenterProfile()
         {
             Components.Lists.Profiles = Profiles.createCenterProfile();
+
+        }
+
+        private void updateProfile()
+        {
+            Components.Profiles.updateProfiles();
         }
 
         private void createProfiles1()
         {
-            Entities.Rectengle centerProfile = Components.Lists.Profiles.Find(d => d.ID == 0);
+            //Entities.Rectengle centerProfile = Components.Lists.Profiles.Find(d => d.ID == 0);
 
-            Components.Lists.Profiles.Clear();
+            //Components.Lists.Profiles.Clear();
 
-            Components.Lists.Profiles.Add(centerProfile);
+            //Components.Lists.Profiles.Add(centerProfile);
 
 
             double length = 6000;
@@ -263,6 +274,104 @@ namespace SollawerGES
             label_info3.Text = dataToShow2;
         }
 
+        private void editMode()
+        {
+            if (isEditModeEnabled)
+            {
+                Entities.Rectengle selectedProfile = Components.Lists.Profiles.Find(d => d.IsSelected == true);
+                Entities.Rectengle selectedIndicator = Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true);
+
+                if (selectedProfile != null)
+                {
+                    //label_infoEdit.Text = $"selected profile: {selectedProfile.ID}";
+
+                    if (selectedIndicator != null && isMousePressed)
+                    {
+                        //label_infoEdit.Text = $"selected profile: {selectedProfile.ID} / selected indicator: {selectedIndicator.ID}";
+
+                        if (selectedProfile.ID == 0)
+                        {
+                            switch (selectedIndicator.ID)
+                            {
+                                case 0:
+                                    {
+                                        selectedProfile.CenterPosition.X = currentMousePosition_MM.X;
+                                        SelectionIndicators.updateIndicators(selectedProfile);
+                                        break;
+                                    }
+                                case -1:
+                                    {
+                                        double lenght = selectedProfile.EndPos.X - currentMousePosition_MM.X;
+
+                                        if (1000 <= lenght && lenght <= 6000)
+                                        {
+                                            selectedProfile.Width = lenght;
+                                            selectedProfile.CenterPosition.X = (selectedEndPoint.X + currentMousePosition_MM.X) / 2;
+                                            SelectionIndicators.updateIndicators(selectedProfile);
+                                        }
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        double lenght = currentMousePosition_MM.X - selectedProfile.StartPos.X;
+
+                                        if (1000 <= lenght && lenght <= 6000)
+                                        {
+                                            selectedProfile.Width = lenght;
+                                            selectedProfile.CenterPosition.X = (selectedStartPoint.X + currentMousePosition_MM.X) / 2;
+                                            SelectionIndicators.updateIndicators(selectedProfile);
+                                        }
+                                        break;
+                                    }
+                            }
+                        }
+                        else if (selectedProfile.ID > 0)
+                        {
+                            switch (Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true).ID)
+                            {
+                                case 1:
+                                    {
+                                        double lenght = currentMousePosition_MM.X - selectedProfile.StartPos.X;
+
+                                        if (1000 <= lenght && lenght <= 6000)
+                                        {
+                                            selectedProfile.Width = lenght;
+                                            selectedProfile.CenterPosition.X = (selectedStartPoint.X + currentMousePosition_MM.X) / 2;
+                                            SelectionIndicators.updateIndicators(selectedProfile);
+                                        }
+                                        break;
+                                    }
+                            }
+                        }
+                        else if (selectedProfile.ID < 0)
+                        {
+                            switch (Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true).ID)
+                            {
+                                case -1:
+                                    {
+                                        double lenght = selectedProfile.EndPos.X - currentMousePosition_MM.X;
+
+                                        if (1000 <= lenght && lenght <= 6000)
+                                        {
+                                            selectedProfile.Width = lenght;
+                                            selectedProfile.CenterPosition.X = (selectedEndPoint.X + currentMousePosition_MM.X) / 2;
+                                            SelectionIndicators.updateIndicators(selectedProfile);
+                                        }
+                                        break;
+                                    }
+                            }
+                        }
+                        updateProfile();
+                        createAksBirls();
+                        updateFrame();
+                    }
+                }
+                else
+                {
+                    //label_infoEdit.Text = $"selected profile: null";
+                }
+            }
+        }
 
         #region EventHendlers
 
@@ -326,6 +435,13 @@ namespace SollawerGES
                 foreach (Entities.Rectengle sideDirek in Components.Lists.SideDireks)
                 {
                     e.Graphics.DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.PrimaryScale, false);
+                }
+            }
+            if(Components.Lists.SelectionIndicators.Count > 0)
+            {
+                foreach(Entities.Rectengle selectionIndicator in Components.Lists.SelectionIndicators)
+                {
+                    e.Graphics.DrawRect(new Pen(Color.Blue, 1), selectionIndicator, UnitConverter.PrimaryScale, false);
                 }
             }
             changed = false;
@@ -427,6 +543,7 @@ namespace SollawerGES
             label_locationBigPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X - (Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(UnitConverter.PrimaryScale)), Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(UnitConverter.PrimaryScale) - currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
             label_locationGlobalBigPX.Text = string.Format("{0} / {1} px", currentGlobalMousePosition.X, currentGlobalMousePosition.Y); //pixel cinsinde yazdirir
 
+            editMode();
         }
 
 
@@ -497,7 +614,8 @@ namespace SollawerGES
             createPanels();
             createAsiks();
             createCenterProfile();
-            createProfiles1();
+            updateProfile();
+            //createProfiles1();
             createAksBirls();
             createMafsals();
             createDireks();
@@ -506,8 +624,26 @@ namespace SollawerGES
         }
         private void button_debug_Click(object sender, EventArgs e)
         {
+            if (isEditModeEnabled)
+            {
+                Entities.Rectengle selectedProfile = Components.Lists.Profiles.First(d => d.IsSelected == true);
+                if (selectedProfile.ID > 0)
+                {
+                    Components.Lists.Profiles.Add(Components.Profiles.addProfileNextTo(selectedProfile, 6000, "right"));
+                }
+                if (selectedProfile.ID < 0)
+                {
+                    Components.Lists.Profiles.Add(Components.Profiles.addProfileNextTo(selectedProfile, 6000, "left"));
+                }
+                if(selectedProfile.ID == 0)
+                {
+                    Components.Lists.Profiles.Add(Components.Profiles.addProfileNextTo(selectedProfile, 6000, "left"));
+                }
+                updateFrame();
+            }
             
         }
+            
 
         private void button_clear_Click(object sender, EventArgs e)
         {
@@ -547,6 +683,57 @@ namespace SollawerGES
             mousePressedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
             mousePressedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
 
+            if (isEditModeEnabled)
+            {
+                if (Components.Lists.Profiles.Count > 0)
+                {
+                    foreach (Entities.Rectengle profile in Components.Lists.Profiles)
+                    {
+                        double centerProfilStartX = profile.StartPos.X;
+                        double centerProfilEndX = profile.EndPos.X;
+                        double centerProfilTopX = profile.TopPos.Y;
+                        double centerProfilBottomX = profile.BottomPos.Y;
+
+                        if (centerProfilStartX <= mousePressedPosition.X && mousePressedPosition.X <= centerProfilEndX && centerProfilBottomX <= mousePressedPosition.Y && mousePressedPosition.Y <= centerProfilTopX)
+                        {
+                            profile.IsSelected = true;
+
+                            selectedCenterPoint = profile.CenterPosition;
+                            selectedStartPoint = profile.StartPos;
+                            selectedEndPoint = profile.EndPos;
+
+                            Components.Lists.SelectionIndicators = new List<Entities.Rectengle>();
+                            SelectionIndicators.updateIndicators(profile);
+
+                            foreach (Entities.Rectengle indicator in Components.Lists.SelectionIndicators)
+                            {
+                                double indicatorStartX = indicator.StartPos.X;
+                                double indicatorEndX = indicator.EndPos.X;
+                                double indicatorTopY = indicator.TopPos.Y;
+                                double indicatorBottomY = indicator.BottomPos.Y;
+
+                                if (indicatorStartX <= currentMousePosition_MM.X && currentMousePosition_MM.X <= indicatorEndX && indicatorBottomY <= currentMousePosition_MM.Y && currentMousePosition_MM.Y <= indicatorTopY)
+                                {
+                                    indicator.IsSelected = true;
+                                }
+                                else
+                                {
+                                    indicator.IsSelected = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            profile.IsSelected = false;
+                        }
+                    }
+                    if(Components.Lists.Profiles.Find(d=>d.IsSelected == true) == null)
+                    {
+                        Components.Lists.SelectionIndicators.Clear();
+                    }
+                    updateFrame();
+                }
+            }
         }
 
         private void panel_drawingBig_MouseUp(object sender, MouseEventArgs e)
@@ -554,7 +741,6 @@ namespace SollawerGES
             isMousePressed = false;
             mouseReleasedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
             mouseReleasedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
-
         }
 
         private void button_editMode_Click(object sender, EventArgs e)
@@ -566,49 +752,6 @@ namespace SollawerGES
             else
             {
                 isEditModeEnabled = true;
-            }
-        }
-
-
-        
-
-        private void panel_drawingBig_MouseClick(object sender, MouseEventArgs e)
-        {
-            mousePressedPosition.X = currentGlobalMousePosition.X.toMM(UnitConverter.PrimaryScale) - (Origins.BaseOrigin_Primary.Position.X.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.X);
-            mousePressedPosition.Y = Origins.BaseOrigin_Primary.Position.Y.toMM(UnitConverter.PrimaryScale) + Origins.MainOrigin.Position.Y - currentGlobalMousePosition.Y.toMM(UnitConverter.PrimaryScale);
-
-            label_infoEdit.Text = $"pressed location: {mousePressedPosition.X} - {mousePressedPosition.Y}";
-
-
-            if (Components.Lists.Profiles.Count > 0 && isEditModeEnabled)
-            {
-                foreach (Entities.Rectengle profile in Components.Lists.Profiles)
-                {
-                    double centerProfilStartX = profile.StartPos.X;
-                    double centerProfilEndX = profile.EndPos.X;
-                    double centerProfilTopX = profile.TopPos.Y;
-                    double centerProfilBottomX = profile.BottomPos.Y;
-
-                    if (centerProfilStartX <= mousePressedPosition.X && mousePressedPosition.X <= centerProfilEndX && centerProfilBottomX <= mousePressedPosition.Y && mousePressedPosition.Y <= centerProfilTopX)
-                    {
-                        profile.IsSelected = true;
-                    }
-                    else
-                    {
-                        profile.IsSelected = false;
-                    }
-                }
-
-
-                if (Components.Lists.Profiles.Find(d => d.IsSelected == true) != null)
-                {
-                    label_info.Text = $"selected component id: {Components.Lists.Profiles.Find(d => d.IsSelected == true).ID}";
-                }
-                else
-                {
-                    label_info.Text = $"selected component id: null";
-                }
-                updateFrame();
             }
         }
 

@@ -10,6 +10,7 @@ namespace SollawerGES.Components
     {
         private static List<Entities.Point> points;
         private static List<Entities.Rectengle> positionBoxes;
+        private static List<Entities.Rectengle> selectionIndicators;
         private static List<Entities.Rectengle> panels;
         private static List<Entities.Rectengle> asiksZ;
         private static List<Entities.Rectengle> asiksW;
@@ -24,6 +25,7 @@ namespace SollawerGES.Components
         {
             points = new List<Entities.Point>();
             positionBoxes = new List<Entities.Rectengle>();
+            selectionIndicators = new List<Entities.Rectengle>();
             panels = new List<Entities.Rectengle>();
             asiksZ = new List<Entities.Rectengle>();
             asiksW = new List<Entities.Rectengle>();
@@ -86,6 +88,12 @@ namespace SollawerGES.Components
         {
             get { return positionBoxes; }
             set { positionBoxes = value; }
+        }
+
+        public static List<Entities.Rectengle> SelectionIndicators
+        {
+            get { return selectionIndicators; }
+            set { selectionIndicators = value; }
         }
 
         public static List<Entities.Rectengle> Panels

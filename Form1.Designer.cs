@@ -42,6 +42,8 @@
             this.label_locationBigMM = new System.Windows.Forms.Label();
             this.label_locationBigPX = new System.Windows.Forms.Label();
             this.panel_content = new System.Windows.Forms.Panel();
+            this.label_infoEdit = new System.Windows.Forms.Label();
+            this.button_editMode = new System.Windows.Forms.Button();
             this.checkBox_showSideDirek = new System.Windows.Forms.CheckBox();
             this.checkBox_showCenterDirek = new System.Windows.Forms.CheckBox();
             this.checkBox_showMafsal = new System.Windows.Forms.CheckBox();
@@ -61,8 +63,6 @@
             this.button_configureRealDPI = new System.Windows.Forms.Button();
             this.label_info = new System.Windows.Forms.Label();
             this.label_locationGlobalBigPX = new System.Windows.Forms.Label();
-            this.button_editMode = new System.Windows.Forms.Button();
-            this.label_infoEdit = new System.Windows.Forms.Label();
             this.panel_header.SuspendLayout();
             this.panel_drawingSmall.SuspendLayout();
             this.panel_drawingBig.SuspendLayout();
@@ -170,7 +170,6 @@
             this.panel_drawingBig.Size = new System.Drawing.Size(1260, 381);
             this.panel_drawingBig.TabIndex = 3;
             this.panel_drawingBig.Paint += new System.Windows.Forms.PaintEventHandler(this.panel_drawingBig_Paint);
-            this.panel_drawingBig.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_drawingBig_MouseClick);
             this.panel_drawingBig.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_drawingBig_MouseDown);
             this.panel_drawingBig.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_drawingBig_MouseMove);
             this.panel_drawingBig.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel_drawingBig_MouseUp);
@@ -254,6 +253,26 @@
             this.panel_content.Name = "panel_content";
             this.panel_content.Size = new System.Drawing.Size(1260, 140);
             this.panel_content.TabIndex = 4;
+            // 
+            // label_infoEdit
+            // 
+            this.label_infoEdit.AutoSize = true;
+            this.label_infoEdit.Location = new System.Drawing.Point(359, 117);
+            this.label_infoEdit.Name = "label_infoEdit";
+            this.label_infoEdit.Size = new System.Drawing.Size(35, 13);
+            this.label_infoEdit.TabIndex = 23;
+            this.label_infoEdit.Text = "label2";
+            // 
+            // button_editMode
+            // 
+            this.button_editMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_editMode.Location = new System.Drawing.Point(253, 112);
+            this.button_editMode.Name = "button_editMode";
+            this.button_editMode.Size = new System.Drawing.Size(100, 23);
+            this.button_editMode.TabIndex = 22;
+            this.button_editMode.Text = "Edit";
+            this.button_editMode.UseVisualStyleBackColor = true;
+            this.button_editMode.Click += new System.EventHandler(this.button_editMode_Click);
             // 
             // checkBox_showSideDirek
             // 
@@ -476,26 +495,6 @@
             this.label_locationGlobalBigPX.TabIndex = 15;
             this.label_locationGlobalBigPX.Text = "0 / 0 px";
             this.label_locationGlobalBigPX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // button_editMode
-            // 
-            this.button_editMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_editMode.Location = new System.Drawing.Point(253, 112);
-            this.button_editMode.Name = "button_editMode";
-            this.button_editMode.Size = new System.Drawing.Size(100, 23);
-            this.button_editMode.TabIndex = 22;
-            this.button_editMode.Text = "Edit";
-            this.button_editMode.UseVisualStyleBackColor = true;
-            this.button_editMode.Click += new System.EventHandler(this.button_editMode_Click);
-            // 
-            // label_infoEdit
-            // 
-            this.label_infoEdit.AutoSize = true;
-            this.label_infoEdit.Location = new System.Drawing.Point(359, 117);
-            this.label_infoEdit.Name = "label_infoEdit";
-            this.label_infoEdit.Size = new System.Drawing.Size(35, 13);
-            this.label_infoEdit.TabIndex = 23;
-            this.label_infoEdit.Text = "label2";
             // 
             // Form1
             // 
