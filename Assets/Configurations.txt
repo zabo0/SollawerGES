@@ -1,5 +1,6 @@
 <Animation><!false>
 <AnimationDelayTime><!15>;
+<SnapStep><!100>;
 <Panel><!1134><!2269><!10><!45>;
 <ZProfilAsik><!60><!1300>;
 <WProfilAsik><!80><!1300>;

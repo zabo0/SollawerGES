@@ -16,6 +16,8 @@ namespace SollawerGES.Utils
         public static bool Animation;
         public static int AnimationDelayTime;
 
+        public static double SnapStep;
+
         public static double WidthPanel;
         public static double HeightPanel;
         public static double SpacePanel;
@@ -83,6 +85,7 @@ namespace SollawerGES.Utils
                 }
 
                 line += "<AnimationDelayTime><!" + AnimationDelayTime.ToString() + ">;" + Environment.NewLine;
+                line += "<SnapStep><!" + SnapStep.ToString() + ">;" + Environment.NewLine;
                 line += "<Panel><!" + WidthPanel.ToString() + "><!" + HeightPanel + "><!" + SpacePanel + "><!" + CountPanel +">;" + Environment.NewLine;
                 line += "<ZProfilAsik><!" + WidthZAsik.ToString() + "><!" + HeightZAsik + ">;" + Environment.NewLine;
                 line += "<WProfilAsik><!" + WidthWAsik.ToString() + "><!" + HeightWAsik + ">;" + Environment.NewLine;
@@ -140,6 +143,15 @@ namespace SollawerGES.Utils
                                 AnimationDelayTime = int.Parse(childMatches[0].Groups[1].Value);
                             }
                             break ;
+                        }
+                    case "SnapStep":
+                        {
+                            MatchCollection childMatches = Regex.Matches(line, @"<!(.+?)>");
+                            if (childMatches.Count > 0)
+                            {
+                                SnapStep = int.Parse(childMatches[0].Groups[1].Value);
+                            }
+                            break;
                         }
                     case "Panel":
                         {

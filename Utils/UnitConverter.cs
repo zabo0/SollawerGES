@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,32 @@ namespace SollawerGES.Utils
             return a;
         }
 
+        public static double round(this double mm, double step)
+        {
+            double remainder = mm % step;
+
+            if(mm > 0)
+            {
+                if (remainder >= step / 2)
+                {
+                    return mm - remainder + step;
+                }
+
+                return mm - remainder;
+            }
+
+            if (mm < 0)
+            {
+                if (remainder <= -step / 2)
+                {
+                    return mm - remainder - step;
+                }
+
+                return mm - remainder;
+            }
+
+            return 0;
+        }
         
 
 

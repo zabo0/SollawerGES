@@ -33,9 +33,9 @@ namespace SollawerGES
         private bool animation = false;
         private int animationDelayTime;
 
-        private Vector2 selectedCenterPoint;
-        private Vector2 selectedStartPoint;
-        private Vector2 selectedEndPoint;
+        private Vector2 selectedProfileCenterPoint;
+        private Vector2 selectedProfileStartPoint;
+        private Vector2 selectedProfileEndPoint;
 
         public Form1()
         {
@@ -126,103 +126,6 @@ namespace SollawerGES
             Components.Profiles.updateProfiles();
         }
 
-        private void createProfiles1()
-        {
-            //Entities.Rectengle centerProfile = Components.Lists.Profiles.Find(d => d.ID == 0);
-
-            //Components.Lists.Profiles.Clear();
-
-            //Components.Lists.Profiles.Add(centerProfile);
-
-
-            double length = 6000;
-            int i = 0;
-
-            while (true)
-            {
-                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "right");
-                if (newProfile == null)
-                {
-                    break;
-                }
-                Components.Lists.Profiles.Add(newProfile);
-                i++;
-            }
-
-            length = 6000;
-            i = 0;
-
-            while (true)
-            {
-                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "left");
-                if (newProfile == null)
-                {
-                    break;
-                }
-                Components.Lists.Profiles.Add(newProfile);
-                i--;
-            }
-        }
-
-        private void createProfiles()
-        {
-            double length = 6000;
-            int i = 0;
-
-            while (true)
-            {
-                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "right");
-                if(newProfile == null)
-                {
-                    break;
-                }
-
-                if (Components.Profiles.conflictControl(newProfile.EndPos.X))
-                {
-                    foreach(Entities.Rectengle profile in Components.Lists.Profiles.ToList())
-                    {
-                        if(profile.ID > 0)
-                        {
-                            Components.Lists.Profiles.Remove(profile);
-                        }
-                    }
-                    length -= 10;
-                    i = 0;
-                    continue;
-                }
-                Components.Lists.Profiles.Add(newProfile);
-                i++;
-            }
-
-            length = 6000;
-            i = 0;
-
-            while (true)
-            {
-                Entities.Rectengle newProfile = Components.Profiles.addProfileNextTo(Components.Lists.Profiles.First(d => d.ID == i), length, "left");
-                if (newProfile == null)
-                {
-                    break;
-                }
-
-                if (Components.Profiles.conflictControl(newProfile.StartPos.X))
-                {
-                    foreach (Entities.Rectengle profile in Components.Lists.Profiles.ToList())
-                    {
-                        if (profile.ID < 0)
-                        {
-                            Components.Lists.Profiles.Remove(profile);
-                        }
-                    }
-                    length -= 10;
-                    i = 0;
-                    continue;
-                }
-                Components.Lists.Profiles.Add(newProfile);
-                i--;
-            }
-
-        }
 
         private void createAksBirls()
         {
@@ -281,6 +184,8 @@ namespace SollawerGES
                 Entities.Rectengle selectedProfile = Components.Lists.Profiles.Find(d => d.IsSelected == true);
                 Entities.Rectengle selectedIndicator = Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true);
 
+                double roundedCurrentMousePosX = currentMousePosition_MM.X.round(Configurations.SnapStep);
+
                 if (selectedProfile != null)
                 {
                     //label_infoEdit.Text = $"selected profile: {selectedProfile.ID}";
@@ -295,32 +200,33 @@ namespace SollawerGES
                             {
                                 case 0:
                                     {
-                                        selectedProfile.CenterPosition.X = currentMousePosition_MM.X;
+                                        selectedProfile.CenterPosition.X = roundedCurrentMousePosX;
                                         SelectionIndicators.updateIndicators(selectedProfile);
                                         break;
                                     }
                                 case -1:
                                     {
-                                        double lenght = selectedProfile.EndPos.X - currentMousePosition_MM.X;
+                                        double lenght = selectedProfile.EndPos.X - roundedCurrentMousePosX;
 
                                         if (1000 <= lenght && lenght <= 6000)
                                         {
                                             selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedEndPoint.X + currentMousePosition_MM.X) / 2;
+                                            selectedProfile.CenterPosition.X = (selectedProfileEndPoint.X + roundedCurrentMousePosX) / 2;
                                             SelectionIndicators.updateIndicators(selectedProfile);
                                         }
                                         break;
                                     }
                                 case 1:
                                     {
-                                        double lenght = currentMousePosition_MM.X - selectedProfile.StartPos.X;
+                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X;
 
                                         if (1000 <= lenght && lenght <= 6000)
                                         {
                                             selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedStartPoint.X + currentMousePosition_MM.X) / 2;
+                                            selectedProfile.CenterPosition.X = (selectedProfileStartPoint.X + roundedCurrentMousePosX) / 2;
                                             SelectionIndicators.updateIndicators(selectedProfile);
                                         }
+
                                         break;
                                     }
                             }
@@ -331,12 +237,12 @@ namespace SollawerGES
                             {
                                 case 1:
                                     {
-                                        double lenght = currentMousePosition_MM.X - selectedProfile.StartPos.X;
+                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X;
 
                                         if (1000 <= lenght && lenght <= 6000)
                                         {
                                             selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedStartPoint.X + currentMousePosition_MM.X) / 2;
+                                            selectedProfile.CenterPosition.X = (selectedProfileStartPoint.X + roundedCurrentMousePosX) / 2;
                                             SelectionIndicators.updateIndicators(selectedProfile);
                                         }
                                         break;
@@ -349,12 +255,12 @@ namespace SollawerGES
                             {
                                 case -1:
                                     {
-                                        double lenght = selectedProfile.EndPos.X - currentMousePosition_MM.X;
+                                        double lenght = selectedProfile.EndPos.X - roundedCurrentMousePosX;
 
                                         if (1000 <= lenght && lenght <= 6000)
                                         {
                                             selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedEndPoint.X + currentMousePosition_MM.X) / 2;
+                                            selectedProfile.CenterPosition.X = (selectedProfileEndPoint.X + roundedCurrentMousePosX) / 2;
                                             SelectionIndicators.updateIndicators(selectedProfile);
                                         }
                                         break;
@@ -615,7 +521,6 @@ namespace SollawerGES
             createAsiks();
             createCenterProfile();
             updateProfile();
-            //createProfiles1();
             createAksBirls();
             createMafsals();
             createDireks();
@@ -698,9 +603,9 @@ namespace SollawerGES
                         {
                             profile.IsSelected = true;
 
-                            selectedCenterPoint = profile.CenterPosition;
-                            selectedStartPoint = profile.StartPos;
-                            selectedEndPoint = profile.EndPos;
+                            selectedProfileCenterPoint = profile.CenterPosition;
+                            selectedProfileStartPoint = profile.StartPos;
+                            selectedProfileEndPoint = profile.EndPos;
 
                             Components.Lists.SelectionIndicators = new List<Entities.Rectengle>();
                             SelectionIndicators.updateIndicators(profile);

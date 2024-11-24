@@ -99,7 +99,7 @@ namespace SollawerGES.Components
                 Components.Lists.Profiles.Add(addProfileNextTo(Components.Lists.Profiles.OrderBy(d => d.EndPos.X).Last(), 6000, "right"));
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X)
+            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X + 300)
             {
                 Components.Lists.Profiles.Remove(Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last());
             }
@@ -109,7 +109,7 @@ namespace SollawerGES.Components
                 Components.Lists.Profiles.Add(addProfileNextTo(Components.Lists.Profiles.OrderBy(d => d.StartPos.X).First(), 6000, "left"));
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X)
+            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X - 300)
             {
                 Components.Lists.Profiles.Remove(Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First());
             }

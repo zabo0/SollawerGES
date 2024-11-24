@@ -25,6 +25,8 @@ namespace SollawerGES
             checkBox_animation.Checked = Configurations.Animation;
             textBox_animationDelayTime.Text = Configurations.AnimationDelayTime.ToString();
 
+            textBox_snapStep.Text = Configurations.SnapStep.ToString();
+
             textBox_widthPanel.Text = Configurations.WidthPanel.ToString();
             textBox_heightPanel.Text = Configurations.HeightPanel.ToString();
             textBox_spacePanel.Text = Configurations.SpacePanel.ToString();
@@ -66,6 +68,8 @@ namespace SollawerGES
         {
             Configurations.Animation = checkBox_animation.Checked;
             Configurations.AnimationDelayTime = int.Parse(textBox_animationDelayTime.Text);
+
+            Configurations.SnapStep = double.Parse(textBox_snapStep.Text);
 
             Configurations.WidthPanel = double.Parse(textBox_widthPanel.Text);
             Configurations.HeightPanel = double.Parse(textBox_heightPanel.Text);

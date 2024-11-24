@@ -84,6 +84,8 @@
             this.checkBox_exportSideDirek = new System.Windows.Forms.CheckBox();
             this.checkBox_exportProfil = new System.Windows.Forms.CheckBox();
             this.button_exportPDF = new System.Windows.Forms.Button();
+            this.label_snapStep = new System.Windows.Forms.Label();
+            this.textBox_snapStep = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -582,6 +584,22 @@
             this.button_exportPDF.UseVisualStyleBackColor = true;
             this.button_exportPDF.Click += new System.EventHandler(this.button_exportPDF_Click);
             // 
+            // label_snapStep
+            // 
+            this.label_snapStep.AutoSize = true;
+            this.label_snapStep.Location = new System.Drawing.Point(379, 80);
+            this.label_snapStep.Name = "label_snapStep";
+            this.label_snapStep.Size = new System.Drawing.Size(82, 13);
+            this.label_snapStep.TabIndex = 6;
+            this.label_snapStep.Text = "Snap Step (mm)";
+            // 
+            // textBox_snapStep
+            // 
+            this.textBox_snapStep.Location = new System.Drawing.Point(516, 77);
+            this.textBox_snapStep.Name = "textBox_snapStep";
+            this.textBox_snapStep.Size = new System.Drawing.Size(123, 20);
+            this.textBox_snapStep.TabIndex = 7;
+            // 
             // FormConfigurations
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -597,6 +615,8 @@
             this.Controls.Add(this.checkBox_exportAsikZ);
             this.Controls.Add(this.checkBox_exportPanels);
             this.Controls.Add(this.label26);
+            this.Controls.Add(this.textBox_snapStep);
+            this.Controls.Add(this.label_snapStep);
             this.Controls.Add(this.textBox_animationDelayTime);
             this.Controls.Add(this.label24);
             this.Controls.Add(this.checkBox_animation);
@@ -711,5 +731,7 @@
         private System.Windows.Forms.CheckBox checkBox_exportSideDirek;
         private System.Windows.Forms.CheckBox checkBox_exportProfil;
         private System.Windows.Forms.Button button_exportPDF;
+        private System.Windows.Forms.Label label_snapStep;
+        private System.Windows.Forms.TextBox textBox_snapStep;
     }
 }
