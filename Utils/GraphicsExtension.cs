@@ -1,4 +1,6 @@
-﻿using SollawerGES.Components;
+﻿using PdfSharp.Charting;
+using SollawerGES.Components;
+using SollawerGES.Entities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,7 +30,7 @@ namespace SollawerGES.Utils
             g.PageUnit = System.Drawing.GraphicsUnit.Pixel;
         }
 
-        public static void DrawPoint(this System.Drawing.Graphics g, System.Drawing.Pen pen, Entities.Point point, double scale)
+        public static void GES_DrawPoint(this System.Drawing.Graphics g, System.Drawing.Pen pen, Entities.Point point, double scale)
         {
             g.SetTransform();
             int thickness = 2;
@@ -36,7 +38,28 @@ namespace SollawerGES.Utils
             g.ResetTransform();
         }
 
-        public static void DrawRect(this System.Drawing.Graphics g, System.Drawing.Pen pen, Entities.Rectengle rectengle, double scale, bool drawText)
+        public static void GES_DrawLine(this System.Drawing.Graphics g, System.Drawing.Pen pen, Entities.Line line, double scale, string text = "")
+        {
+            g.SetTransform();
+            double startPosX = Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(scale) + line.StartPosition.X.toPX(scale);
+            double startPosY = Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(scale) - line.StartPosition.Y.toPX(scale);
+
+            double endPosX = Origins.BaseOrigin_Primary.Position.X + Origins.MainOrigin.Position.X.toPX(scale) + line.EndPosition.X.toPX(scale);
+            double endPosY = Origins.BaseOrigin_Primary.Position.Y + Origins.MainOrigin.Position.Y.toPX(scale) - line.EndPosition.Y.toPX(scale);
+
+            if (text != "")
+            {
+                System.Drawing.Font font = new System.Drawing.Font("Arial", 12);
+                SolidBrush solidBrush = new SolidBrush(Color.Black);
+                Vector2 centerPos = new Vector2((startPosX + endPosX) / 2, (startPosY + endPosY) / 2);
+                g.DrawString(text, font, solidBrush, (float)centerPos.X, (float)centerPos.Y - 30);
+            }
+
+            g.DrawLine(pen, (float)startPosX, (float)startPosY, (float)endPosX, (float)endPosY);
+            g.ResetTransform();
+        }
+
+        public static void GES_DrawRect(this System.Drawing.Graphics g, System.Drawing.Pen pen, Entities.Rectengle rectengle, double scale, string text = "")
         {
             g.SetTransform();
             double posX;
@@ -59,11 +82,11 @@ namespace SollawerGES.Utils
 
             Rectangle rect = new Rectangle((int)posX, (int)posY, (int)rWidth, (int)rHeight); //dikdortgen olusturulur
 
-            if (drawText)
+            if (text != "")
             {
-                Font font = new Font("Arial", 12);
+                System.Drawing.Font font = new System.Drawing.Font("Arial", 12);
                 SolidBrush solidBrush = new SolidBrush(Color.Red);
-                g.DrawString(rectengle.ID.ToString(), font, solidBrush, (float)posX + 10, (float)posY - 50);
+                g.DrawString(text, font, solidBrush, (float)posX + 10, (float)posY - 50);
             }
 
             if (rectengle.IsSelected)

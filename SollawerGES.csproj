@@ -122,6 +122,9 @@
     <Compile Include="Constraints\Constraint.cs" />
     <Compile Include="Constraints\ConstraintDistanceRectPoint.cs" />
     <Compile Include="Constraints\ConstraintSolver.cs" />
+    <Compile Include="Dimensions\Dimension.cs" />
+    <Compile Include="Dimensions\DimensionManager.cs" />
+    <Compile Include="Entities\Line.cs" />
     <Compile Include="Entities\Point.cs" />
     <Compile Include="Entities\Rectengle.cs" />
     <Compile Include="Form1.cs">

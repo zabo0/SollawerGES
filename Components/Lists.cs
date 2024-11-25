@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SollawerGES.Dimensions;
 
 namespace SollawerGES.Components
 {
@@ -11,6 +12,7 @@ namespace SollawerGES.Components
         private static List<Entities.Point> points;
         private static List<Entities.Rectengle> positionBoxes;
         private static List<Entities.Rectengle> selectionIndicators;
+        private static List<Dimension> dimensions;
         private static List<Entities.Rectengle> panels;
         private static List<Entities.Rectengle> asiksZ;
         private static List<Entities.Rectengle> asiksW;
@@ -26,6 +28,7 @@ namespace SollawerGES.Components
             points = new List<Entities.Point>();
             positionBoxes = new List<Entities.Rectengle>();
             selectionIndicators = new List<Entities.Rectengle>();
+            dimensions = new List<Dimension>();
             panels = new List<Entities.Rectengle>();
             asiksZ = new List<Entities.Rectengle>();
             asiksW = new List<Entities.Rectengle>();
@@ -94,6 +97,12 @@ namespace SollawerGES.Components
         {
             get { return selectionIndicators; }
             set { selectionIndicators = value; }
+        }
+
+        public static List<Dimension> Dimensions
+        {
+            get { return dimensions; }
+            set { dimensions = value; }
         }
 
         public static List<Entities.Rectengle> Panels

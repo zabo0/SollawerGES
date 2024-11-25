@@ -1,5 +1,6 @@
 ﻿using SollawerGES.Components;
 using SollawerGES.Constraints;
+using SollawerGES.Dimensions;
 using SollawerGES.Utils;
 using System;
 using System.Collections.Generic;
@@ -143,6 +144,15 @@ namespace SollawerGES
             Components.Lists.SideDireks = Direks.createSideDireks(Components.Lists.Mafsals);
         }
 
+        private void updateDimensions()
+        {
+            Components.Lists.Dimensions.Clear();
+            foreach(Entities.Rectengle profile in Components.Lists.Profiles)
+            {
+                DimensionManager.addDimension(profile.StartPos, profile.EndPos);
+            }
+        }
+
         private void drawPositionBox()
         {
             Components.Lists.PositionBoxes.Clear();
@@ -277,6 +287,7 @@ namespace SollawerGES
                     //label_infoEdit.Text = $"selected profile: null";
                 }
             }
+            updateDimensions();
         }
 
         #region EventHendlers
@@ -285,69 +296,84 @@ namespace SollawerGES
         {
             e.Graphics.SetParameters(panel_drawingBig.Height, panel_drawingBig.Width);
 
-            e.Graphics.DrawPoint(new Pen(Color.Red, 2), Origins.MainOrigin, UnitConverter.PrimaryScale);
+            e.Graphics.GES_DrawPoint(new Pen(Color.Red, 2), Origins.MainOrigin, UnitConverter.PrimaryScale);
 
             if (Components.Lists.Panels.Count > 0 && checkBox_showPanel.Checked)
             {
                 foreach (Entities.Rectengle panel in Components.Lists.Panels)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.AsiksZ.Count > 0 && checkBox_showAsikZ.Checked)
             {
                 foreach(Entities.Rectengle asikZ in Components.Lists.AsiksZ)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.AsiksW.Count > 0 && checkBox_showAsikW.Checked)
             {
                 foreach(Entities.Rectengle asikW in Components.Lists.AsiksW)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.Profiles.Count > 0 && checkBox_showProfile.Checked)
             {
                 foreach(Entities.Rectengle profile in Components.Lists.Profiles)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.PrimaryScale, true);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.PrimaryScale, profile.ID.ToString());
                 }
             }
             if(Components.Lists.AksBirls.Count > 0 && checkBox_showAksBirl.Checked)
             {
                 foreach(Entities.Rectengle aksBirl in Components.Lists.AksBirls)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.Mafsals.Count > 0 && checkBox_showMafsal.Checked)
             {
                 foreach(Entities.Rectengle mafsal in Components.Lists.Mafsals)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.CenterDireks.Count  > 0 && checkBox_showCenterDirek.Checked)
             {
                 foreach(Entities.Rectengle centerDirek in Components.Lists.CenterDireks)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.PrimaryScale);
                 }
             }
             if (Components.Lists.SideDireks.Count > 0 && checkBox_showSideDirek.Checked)
             {
                 foreach (Entities.Rectengle sideDirek in Components.Lists.SideDireks)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.PrimaryScale);
                 }
             }
             if(Components.Lists.SelectionIndicators.Count > 0)
             {
                 foreach(Entities.Rectengle selectionIndicator in Components.Lists.SelectionIndicators)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Blue, 1), selectionIndicator, UnitConverter.PrimaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Blue, 1), selectionIndicator, UnitConverter.PrimaryScale);
+                }
+            }
+            if(Components.Lists.Dimensions.Count > 0 && checkBox_showDimensions.Checked)
+            {
+                foreach(Dimension dimension in Components.Lists.Dimensions)
+                {
+                    foreach(Entities.Line line in dimension.ShapeLinesList)
+                    {
+                        string text = "";
+                        if(line.ID == 1)
+                        {
+                            text = dimension.Lenght.ToString();
+                        }
+                        e.Graphics.GES_DrawLine(new Pen(Color.Black, 0.5f), line, UnitConverter.PrimaryScale, text);
+                    }
                 }
             }
             changed = false;
@@ -361,7 +387,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle panel in Components.Lists.Panels)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), panel, UnitConverter.SecondaryScale);
                     if(changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -370,7 +396,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle asikZ in Components.Lists.AsiksZ)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), asikZ, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -379,7 +405,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle asikW in Components.Lists.AsiksW)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), asikW, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -388,7 +414,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle profile in Components.Lists.Profiles)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), profile, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -397,7 +423,7 @@ namespace SollawerGES
             {
                 foreach(Entities.Rectengle aksBirl in Components.Lists.AksBirls)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), aksBirl, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -406,7 +432,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle mafsal in Components.Lists.Mafsals)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), mafsal, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -415,7 +441,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle centerDirek in Components.Lists.CenterDireks)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), centerDirek, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -424,7 +450,7 @@ namespace SollawerGES
             {
                 foreach (Entities.Rectengle sideDirek in Components.Lists.SideDireks)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Red, 1), sideDirek, UnitConverter.SecondaryScale);
                     if (changed && animation)
                         Thread.Sleep(animationDelayTime);
                 }
@@ -433,7 +459,7 @@ namespace SollawerGES
             {
                 foreach(Entities.Rectengle positionBox in Components.Lists.PositionBoxes)
                 {
-                    e.Graphics.DrawRect(new Pen(Color.Black, 2), positionBox, UnitConverter.SecondaryScale, false);
+                    e.Graphics.GES_DrawRect(new Pen(Color.Black, 2), positionBox, UnitConverter.SecondaryScale);
                 }
             }
             changed = false;
@@ -524,6 +550,8 @@ namespace SollawerGES
             createAksBirls();
             createMafsals();
             createDireks();
+
+            updateDimensions();
 
             updateFrame();
         }

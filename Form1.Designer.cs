@@ -63,6 +63,7 @@
             this.button_configureRealDPI = new System.Windows.Forms.Button();
             this.label_info = new System.Windows.Forms.Label();
             this.label_locationGlobalBigPX = new System.Windows.Forms.Label();
+            this.checkBox_showDimensions = new System.Windows.Forms.CheckBox();
             this.panel_header.SuspendLayout();
             this.panel_drawingSmall.SuspendLayout();
             this.panel_drawingBig.SuspendLayout();
@@ -241,6 +242,7 @@
             this.panel_content.Controls.Add(this.checkBox_showCenterDirek);
             this.panel_content.Controls.Add(this.checkBox_showMafsal);
             this.panel_content.Controls.Add(this.checkBox_showAksBirl);
+            this.panel_content.Controls.Add(this.checkBox_showDimensions);
             this.panel_content.Controls.Add(this.checkBox_showProfile);
             this.panel_content.Controls.Add(this.checkBox_showAsikW);
             this.panel_content.Controls.Add(this.checkBox_showAsikZ);
@@ -257,7 +259,7 @@
             // label_infoEdit
             // 
             this.label_infoEdit.AutoSize = true;
-            this.label_infoEdit.Location = new System.Drawing.Point(359, 117);
+            this.label_infoEdit.Location = new System.Drawing.Point(475, 117);
             this.label_infoEdit.Name = "label_infoEdit";
             this.label_infoEdit.Size = new System.Drawing.Size(35, 13);
             this.label_infoEdit.TabIndex = 23;
@@ -265,7 +267,6 @@
             // 
             // button_editMode
             // 
-            this.button_editMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_editMode.Location = new System.Drawing.Point(253, 112);
             this.button_editMode.Name = "button_editMode";
             this.button_editMode.Size = new System.Drawing.Size(100, 23);
@@ -496,6 +497,19 @@
             this.label_locationGlobalBigPX.Text = "0 / 0 px";
             this.label_locationGlobalBigPX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // checkBox_showDimensions
+            // 
+            this.checkBox_showDimensions.AutoSize = true;
+            this.checkBox_showDimensions.Checked = true;
+            this.checkBox_showDimensions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_showDimensions.Location = new System.Drawing.Point(359, 116);
+            this.checkBox_showDimensions.Name = "checkBox_showDimensions";
+            this.checkBox_showDimensions.Size = new System.Drawing.Size(110, 17);
+            this.checkBox_showDimensions.TabIndex = 21;
+            this.checkBox_showDimensions.Text = "Show Dimensions";
+            this.checkBox_showDimensions.UseVisualStyleBackColor = true;
+            this.checkBox_showDimensions.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -569,6 +583,7 @@
         private System.Windows.Forms.CheckBox checkBox_showAsikZ;
         private System.Windows.Forms.Button button_editMode;
         private System.Windows.Forms.Label label_infoEdit;
+        private System.Windows.Forms.CheckBox checkBox_showDimensions;
     }
 }
 
