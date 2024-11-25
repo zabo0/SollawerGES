@@ -38,10 +38,13 @@ namespace SollawerGES.Utils
         public static double WidthMafsal;
         public static double HeightMafsal;
         public static double ActuatorDistanceMafsal;
+        public static double MinMafsalSpace;
+        public static double MaxMafsalSpace;
 
         public static double WidthDirek;
         public static double HeightDirek;
 
+        
         
         public static void readConfiguration()
         {
@@ -91,7 +94,7 @@ namespace SollawerGES.Utils
                 line += "<WProfilAsik><!" + WidthWAsik.ToString() + "><!" + HeightWAsik + ">;" + Environment.NewLine;
                 line += "<Profil><!" + HeightProfil.ToString() + "><!" + SpaceProfil  + ">;" + Environment.NewLine;
                 line += "<AksBirlestirici><!" + WidthAksBirl.ToString() + "><!" + HeightAksBirl  + ">;" + Environment.NewLine;
-                line += "<Mafsal><!" + WidthMafsal.ToString() + "><!" + HeightMafsal + "><!" + ActuatorDistanceMafsal + ">;" + Environment.NewLine;
+                line += "<Mafsal><!" + WidthMafsal.ToString() + "><!" + HeightMafsal + "><!" + ActuatorDistanceMafsal + "><!" + MinMafsalSpace + "><!" + MaxMafsalSpace + ">;" + Environment.NewLine;
                 line += "<Direk><!" + WidthDirek.ToString() + "><!" + HeightDirek  + ">;" + Environment.NewLine;
 
                 sw.WriteLine(line);
@@ -213,6 +216,8 @@ namespace SollawerGES.Utils
                                 WidthMafsal = double.Parse(childMatches[0].Groups[1].Value);
                                 HeightMafsal = double.Parse(childMatches[1].Groups[1].Value);
                                 ActuatorDistanceMafsal = double.Parse(childMatches[2].Groups[1].Value);
+                                MinMafsalSpace = double.Parse(childMatches[3].Groups[1].Value);
+                                MaxMafsalSpace = double.Parse(childMatches[4].Groups[1].Value);
                             }
                             break;
                         }

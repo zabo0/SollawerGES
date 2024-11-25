@@ -10,12 +10,12 @@ namespace SollawerGES.Dimensions
     public static class DimensionManager
     {
 
-        public static void addDimension(Vector2 firstPoint, Vector2 secondPoint, Vector2 dimPosition = null)
+        public static void addDimension(int id, Vector2 firstPoint, Vector2 secondPoint, Vector2 dimPosition = null)
         {
             if (dimPosition == null)
-                dimPosition = calculateDefaultDimPosition(firstPoint, secondPoint, 1500);
+                dimPosition = calculateDimPosition(firstPoint, secondPoint, 1500);
 
-            Dimension dimension = new Dimension(firstPoint, secondPoint, dimPosition);
+            Dimension dimension = new Dimension(id, firstPoint, secondPoint, dimPosition);
             Components.Lists.Dimensions.Add(dimension);
         }
 
@@ -66,7 +66,7 @@ namespace SollawerGES.Dimensions
             Components.Lists.Dimensions.Clear();
         }
 
-        public static Vector2 calculateDefaultDimPosition(Vector2 firstPoint, Vector2 secondPoint, double distance)
+        public static Vector2 calculateDimPosition(Vector2 firstPoint, Vector2 secondPoint, double distance)
         {
             Vector2 centerPosition = new Vector2((firstPoint.X + secondPoint.X) / 2, (firstPoint.Y + secondPoint.Y) / 2);
             return new Vector2(centerPosition.X, centerPosition.Y + distance);

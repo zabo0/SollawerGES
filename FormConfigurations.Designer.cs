@@ -86,6 +86,10 @@
             this.button_exportPDF = new System.Windows.Forms.Button();
             this.label_snapStep = new System.Windows.Forms.Label();
             this.textBox_snapStep = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.textBox_minMafsalSpace = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.textBox_maxMafsalSpace = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -369,7 +373,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(12, 619);
+            this.label21.Location = new System.Drawing.Point(12, 665);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(32, 13);
             this.label21.TabIndex = 0;
@@ -378,7 +382,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(38, 642);
+            this.label22.Location = new System.Drawing.Point(38, 688);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(35, 13);
             this.label22.TabIndex = 1;
@@ -387,7 +391,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(38, 668);
+            this.label23.Location = new System.Drawing.Point(38, 714);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(38, 13);
             this.label23.TabIndex = 1;
@@ -395,21 +399,21 @@
             // 
             // textBox_widthDirek
             // 
-            this.textBox_widthDirek.Location = new System.Drawing.Point(79, 639);
+            this.textBox_widthDirek.Location = new System.Drawing.Point(79, 685);
             this.textBox_widthDirek.Name = "textBox_widthDirek";
             this.textBox_widthDirek.Size = new System.Drawing.Size(179, 20);
             this.textBox_widthDirek.TabIndex = 2;
             // 
             // textBox_heightDirek
             // 
-            this.textBox_heightDirek.Location = new System.Drawing.Point(79, 665);
+            this.textBox_heightDirek.Location = new System.Drawing.Point(79, 711);
             this.textBox_heightDirek.Name = "textBox_heightDirek";
             this.textBox_heightDirek.Size = new System.Drawing.Size(179, 20);
             this.textBox_heightDirek.TabIndex = 2;
             // 
             // button_configurationsSave
             // 
-            this.button_configurationsSave.Location = new System.Drawing.Point(771, 668);
+            this.button_configurationsSave.Location = new System.Drawing.Point(771, 714);
             this.button_configurationsSave.Name = "button_configurationsSave";
             this.button_configurationsSave.Size = new System.Drawing.Size(75, 23);
             this.button_configurationsSave.TabIndex = 3;
@@ -419,7 +423,7 @@
             // 
             // button_configurationsCancel
             // 
-            this.button_configurationsCancel.Location = new System.Drawing.Point(690, 668);
+            this.button_configurationsCancel.Location = new System.Drawing.Point(690, 714);
             this.button_configurationsCancel.Name = "button_configurationsCancel";
             this.button_configurationsCancel.Size = new System.Drawing.Size(75, 23);
             this.button_configurationsCancel.TabIndex = 4;
@@ -600,11 +604,43 @@
             this.textBox_snapStep.Size = new System.Drawing.Size(123, 20);
             this.textBox_snapStep.TabIndex = 7;
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(38, 605);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(58, 13);
+            this.label27.TabIndex = 1;
+            this.label27.Text = "Min Space";
+            // 
+            // textBox_minMafsalSpace
+            // 
+            this.textBox_minMafsalSpace.Location = new System.Drawing.Point(136, 602);
+            this.textBox_minMafsalSpace.Name = "textBox_minMafsalSpace";
+            this.textBox_minMafsalSpace.Size = new System.Drawing.Size(122, 20);
+            this.textBox_minMafsalSpace.TabIndex = 2;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(38, 631);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(61, 13);
+            this.label28.TabIndex = 1;
+            this.label28.Text = "Max Space";
+            // 
+            // textBox_maxMafsalSpace
+            // 
+            this.textBox_maxMafsalSpace.Location = new System.Drawing.Point(136, 628);
+            this.textBox_maxMafsalSpace.Name = "textBox_maxMafsalSpace";
+            this.textBox_maxMafsalSpace.Size = new System.Drawing.Size(122, 20);
+            this.textBox_maxMafsalSpace.TabIndex = 2;
+            // 
             // FormConfigurations
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 703);
+            this.ClientSize = new System.Drawing.Size(858, 749);
             this.Controls.Add(this.button_exportPDF);
             this.Controls.Add(this.checkBox_exportSideDirek);
             this.Controls.Add(this.checkBox_exportCenterDirek);
@@ -622,6 +658,8 @@
             this.Controls.Add(this.checkBox_animation);
             this.Controls.Add(this.button_configurationsCancel);
             this.Controls.Add(this.button_configurationsSave);
+            this.Controls.Add(this.textBox_maxMafsalSpace);
+            this.Controls.Add(this.textBox_minMafsalSpace);
             this.Controls.Add(this.textBox_actuatorDistanceMafsal);
             this.Controls.Add(this.textBox_countPanel);
             this.Controls.Add(this.textBox_spacePanel);
@@ -634,7 +672,9 @@
             this.Controls.Add(this.textBox_heightPanel);
             this.Controls.Add(this.textBox_widthDirek);
             this.Controls.Add(this.textBox_widthAksBirl);
+            this.Controls.Add(this.label28);
             this.Controls.Add(this.textBox_heightProfil);
+            this.Controls.Add(this.label27);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label25);
@@ -733,5 +773,9 @@
         private System.Windows.Forms.Button button_exportPDF;
         private System.Windows.Forms.Label label_snapStep;
         private System.Windows.Forms.TextBox textBox_snapStep;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox textBox_minMafsalSpace;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox textBox_maxMafsalSpace;
     }
 }

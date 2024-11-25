@@ -1,11 +1,11 @@
 <Animation><!false>
 <AnimationDelayTime><!15>;
-<SnapStep><!100>;
+<SnapStep><!50>;
 <Panel><!1134><!2269><!10><!45>;
 <ZProfilAsik><!60><!1300>;
 <WProfilAsik><!80><!1300>;
 <Profil><!120><!20>;
 <AksBirlestirici><!320><!222>;
-<Mafsal><!76><!250><!230>;
+<Mafsal><!76><!250><!230><!4000><!6000>;
 <Direk><!90><!2950>;
 

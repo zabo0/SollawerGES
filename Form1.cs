@@ -38,6 +38,10 @@ namespace SollawerGES
         private Vector2 selectedProfileStartPoint;
         private Vector2 selectedProfileEndPoint;
 
+        private Vector2 selectedMafsalCenterPoint;
+        private Vector2 selectedMafsalStartPoint;
+        private Vector2 selectedMafsalEndPoint;
+
         public Form1()
         {
             InitializeComponent();
@@ -133,9 +137,14 @@ namespace SollawerGES
             Components.Lists.AksBirls = AksBirls.createAksBirls(Components.Lists.Profiles);
         }
 
-        private void createMafsals()
+        private void createCenterMafsals()
         {
-            Components.Lists.Mafsals = Mafsals.createAllMafsals();
+            Components.Lists.Mafsals = Components.Mafsals.createCenterMafsals();
+        }
+
+        private void updateMafsals()
+        {
+            Components.Mafsals.updateMafsals();
         }
 
         private void createDireks()
@@ -147,10 +156,29 @@ namespace SollawerGES
         private void updateDimensions()
         {
             Components.Lists.Dimensions.Clear();
+
             foreach(Entities.Rectengle profile in Components.Lists.Profiles)
             {
-                DimensionManager.addDimension(profile.StartPos, profile.EndPos);
+                if(profile.ID == 0)
+                {
+                    DimensionManager.addDimension(0, profile.StartPos, Components.Lists.Mafsals.Find(d => d.ID == -1).StartPos, DimensionManager.calculateDimPosition(profile.StartPos, Components.Lists.Mafsals.Find(d => d.ID == -1).StartPos, 500));
+                }
+                DimensionManager.addDimension(0, profile.StartPos, profile.EndPos);
             }
+
+            foreach (Entities.Rectengle currentMafsal in Components.Lists.Mafsals.OrderBy(d => d.ID).ToList().FindAll(d => d.ID > 1))
+            {
+                Entities.Rectengle previousMafsal = Components.Lists.Mafsals.Find(d => d.ID == currentMafsal.ID - 1);
+                DimensionManager.addDimension(1, previousMafsal.StartPos, currentMafsal.StartPos);
+            }
+
+            foreach (Entities.Rectengle currentMafsal in Components.Lists.Mafsals.OrderByDescending(d => d.ID).ToList().FindAll(d => d.ID < -1))
+            {
+                Entities.Rectengle previousMafsal = Components.Lists.Mafsals.Find(d => d.ID == currentMafsal.ID + 1);
+                DimensionManager.addDimension(1, currentMafsal.EndPos, previousMafsal.EndPos);
+            }
+
+
         }
 
         private void drawPositionBox()
@@ -192,50 +220,51 @@ namespace SollawerGES
             if (isEditModeEnabled)
             {
                 Entities.Rectengle selectedProfile = Components.Lists.Profiles.Find(d => d.IsSelected == true);
+                Entities.Rectengle selectedMafsal = Components.Lists.Mafsals.Find(d => d.IsSelected == true);
                 Entities.Rectengle selectedIndicator = Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true);
 
                 double roundedCurrentMousePosX = currentMousePosition_MM.X.round(Configurations.SnapStep);
 
                 if (selectedProfile != null)
                 {
-                    //label_infoEdit.Text = $"selected profile: {selectedProfile.ID}";
-
                     if (selectedIndicator != null && isMousePressed)
                     {
-                        //label_infoEdit.Text = $"selected profile: {selectedProfile.ID} / selected indicator: {selectedIndicator.ID}";
-
                         if (selectedProfile.ID == 0)
                         {
                             switch (selectedIndicator.ID)
                             {
                                 case 0:
                                     {
-                                        selectedProfile.CenterPosition.X = roundedCurrentMousePosX;
-                                        SelectionIndicators.updateIndicators(selectedProfile);
+                                        selectedProfile.CenterPosition.X = currentMousePosition_MM.X.round(1);
+                                        SelectionIndicators.updateProfileIndicators(selectedProfile);
                                         break;
                                     }
                                 case -1:
                                     {
-                                        double lenght = selectedProfile.EndPos.X - roundedCurrentMousePosX;
+                                        double lenght = selectedProfile.EndPos.X.round(Configurations.SnapStep) - roundedCurrentMousePosX;
 
-                                        if (1000 <= lenght && lenght <= 6000)
-                                        {
-                                            selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedProfileEndPoint.X + roundedCurrentMousePosX) / 2;
-                                            SelectionIndicators.updateIndicators(selectedProfile);
-                                        }
+                                        if (lenght < 1000)
+                                            lenght = 1000;
+                                        if (lenght > 6000)
+                                            lenght = 6000;
+                                            
+                                        selectedProfile.Width = lenght;
+                                        selectedProfile.CenterPosition.X = selectedProfileEndPoint.X - lenght / 2;
+                                        SelectionIndicators.updateProfileIndicators(selectedProfile);
                                         break;
                                     }
                                 case 1:
                                     {
-                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X;
+                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X.round(Configurations.SnapStep);
 
-                                        if (1000 <= lenght && lenght <= 6000)
-                                        {
-                                            selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedProfileStartPoint.X + roundedCurrentMousePosX) / 2;
-                                            SelectionIndicators.updateIndicators(selectedProfile);
-                                        }
+                                        if (lenght < 1000)
+                                            lenght = 1000;
+                                        if (lenght > 6000)
+                                            lenght = 6000;
+
+                                        selectedProfile.Width = lenght;
+                                        selectedProfile.CenterPosition.X = selectedProfileStartPoint.X + lenght / 2;
+                                        SelectionIndicators.updateProfileIndicators(selectedProfile);
 
                                         break;
                                     }
@@ -243,42 +272,93 @@ namespace SollawerGES
                         }
                         else if (selectedProfile.ID > 0)
                         {
-                            switch (Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true).ID)
+                            switch (selectedIndicator.ID)
                             {
                                 case 1:
                                     {
-                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X;
+                                        double lenght = roundedCurrentMousePosX - selectedProfile.StartPos.X.round(Configurations.SnapStep);
 
-                                        if (1000 <= lenght && lenght <= 6000)
-                                        {
-                                            selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedProfileStartPoint.X + roundedCurrentMousePosX) / 2;
-                                            SelectionIndicators.updateIndicators(selectedProfile);
-                                        }
+                                        if (lenght < 1000)
+                                            lenght = 1000;
+                                        if (lenght > 6000)
+                                            lenght = 6000;
+
+                                        selectedProfile.Width = lenght;
+                                        selectedProfile.CenterPosition.X = selectedProfileStartPoint.X + lenght / 2;
+                                        SelectionIndicators.updateProfileIndicators(selectedProfile);
                                         break;
                                     }
                             }
                         }
                         else if (selectedProfile.ID < 0)
                         {
-                            switch (Components.Lists.SelectionIndicators.Find(d => d.IsSelected == true).ID)
+                            switch (selectedIndicator.ID)
                             {
                                 case -1:
                                     {
-                                        double lenght = selectedProfile.EndPos.X - roundedCurrentMousePosX;
+                                        double lenght = selectedProfile.EndPos.X.round(Configurations.SnapStep) - roundedCurrentMousePosX;
 
-                                        if (1000 <= lenght && lenght <= 6000)
-                                        {
-                                            selectedProfile.Width = lenght;
-                                            selectedProfile.CenterPosition.X = (selectedProfileEndPoint.X + roundedCurrentMousePosX) / 2;
-                                            SelectionIndicators.updateIndicators(selectedProfile);
-                                        }
+                                        if (lenght < 1000)
+                                            lenght = 1000;
+                                        if (lenght > 6000)
+                                            lenght = 6000;
+
+                                        selectedProfile.Width = lenght;
+                                        selectedProfile.CenterPosition.X = selectedProfileEndPoint.X - lenght / 2;
+                                        SelectionIndicators.updateProfileIndicators(selectedProfile);
                                         break;
                                     }
                             }
                         }
                         updateProfile();
                         createAksBirls();
+                        updateFrame();
+                    }
+                }
+                if (selectedMafsal != null)
+                {
+                    if (selectedIndicator != null && isMousePressed)
+                    {
+                        if (selectedMafsal.ID > 1)
+                        {
+                            switch (selectedIndicator.ID)
+                            {
+                                case 0:
+                                    {
+                                        double space = roundedCurrentMousePosX - Components.Lists.Mafsals.Find(d => d.ID == selectedMafsal.ID - 1).CenterPosition.X;
+
+                                        if(space < Configurations.MinMafsalSpace)
+                                            space = Configurations.MinMafsalSpace;
+                                        if (space > Configurations.MaxMafsalSpace)
+                                            space = Configurations.MaxMafsalSpace;
+
+                                        selectedMafsal.CenterPosition.X = Components.Lists.Mafsals.Find(d => d.ID == selectedMafsal.ID - 1).CenterPosition.X + space;
+                                        SelectionIndicators.updateMafsalIndicators(selectedMafsal);
+                                        break;
+                                    }
+                            }
+                        }
+                        else if (selectedMafsal.ID < -1)
+                        {
+                            switch (selectedIndicator.ID)
+                            {
+                                case 0:
+                                    {
+                                        double space = Components.Lists.Mafsals.Find(d => d.ID == selectedMafsal.ID + 1).CenterPosition.X - roundedCurrentMousePosX;
+
+                                        if (space < Configurations.MinMafsalSpace)
+                                            space = Configurations.MinMafsalSpace;
+                                        if (space > Configurations.MaxMafsalSpace)
+                                            space = Configurations.MaxMafsalSpace;
+
+                                        selectedMafsal.CenterPosition.X = Components.Lists.Mafsals.Find(d => d.ID == selectedMafsal.ID + 1).CenterPosition.X - space;
+                                        SelectionIndicators.updateMafsalIndicators(selectedMafsal);
+                                        break;
+                                    }
+                            }
+                        }
+                        updateMafsals();
+                        createDireks();
                         updateFrame();
                     }
                 }
@@ -361,19 +441,36 @@ namespace SollawerGES
                     e.Graphics.GES_DrawRect(new Pen(Color.Blue, 1), selectionIndicator, UnitConverter.PrimaryScale);
                 }
             }
-            if(Components.Lists.Dimensions.Count > 0 && checkBox_showDimensions.Checked)
+            if(Components.Lists.Dimensions.Count > 0)
             {
                 foreach(Dimension dimension in Components.Lists.Dimensions)
                 {
-                    foreach(Entities.Line line in dimension.ShapeLinesList)
+                    if(dimension.ID == 0 && checkBox_showProfileDimensions.Checked)
                     {
-                        string text = "";
-                        if(line.ID == 1)
+                        foreach (Entities.Line line in dimension.ShapeLinesList)
                         {
-                            text = dimension.Lenght.ToString();
+                            string text = "";
+                            if (line.ID == 1)
+                            {
+                                text = dimension.Lenght.ToString();
+                            }
+                            e.Graphics.GES_DrawLine(new Pen(Color.Black, 0.5f), line, UnitConverter.PrimaryScale, text);
                         }
-                        e.Graphics.GES_DrawLine(new Pen(Color.Black, 0.5f), line, UnitConverter.PrimaryScale, text);
                     }
+
+                    if (dimension.ID == 1 && checkBox_showMafsalDimensions.Checked)
+                    {
+                        foreach (Entities.Line line in dimension.ShapeLinesList)
+                        {
+                            string text = "";
+                            if (line.ID == 1)
+                            {
+                                text = dimension.Lenght.ToString();
+                            }
+                            e.Graphics.GES_DrawLine(new Pen(Color.Black, 0.5f), line, UnitConverter.PrimaryScale, text);
+                        }
+                    }
+
                 }
             }
             changed = false;
@@ -548,7 +645,8 @@ namespace SollawerGES
             createCenterProfile();
             updateProfile();
             createAksBirls();
-            createMafsals();
+            createCenterMafsals();
+            updateMafsals();
             createDireks();
 
             updateDimensions();
@@ -636,7 +734,7 @@ namespace SollawerGES
                             selectedProfileEndPoint = profile.EndPos;
 
                             Components.Lists.SelectionIndicators = new List<Entities.Rectengle>();
-                            SelectionIndicators.updateIndicators(profile);
+                            SelectionIndicators.updateProfileIndicators(profile);
 
                             foreach (Entities.Rectengle indicator in Components.Lists.SelectionIndicators)
                             {
@@ -660,12 +758,59 @@ namespace SollawerGES
                             profile.IsSelected = false;
                         }
                     }
-                    if(Components.Lists.Profiles.Find(d=>d.IsSelected == true) == null)
-                    {
-                        Components.Lists.SelectionIndicators.Clear();
-                    }
-                    updateFrame();
                 }
+
+                if(Components.Lists.Mafsals.Count > 0)
+                {
+                    foreach(Entities.Rectengle mafsal in Components.Lists.Mafsals)
+                    {
+                        double centerMafsalStartX = mafsal.StartPos.X;
+                        double centerMafsalEndX = mafsal.EndPos.X;
+                        double centerMafsalTopY = mafsal.TopPos.Y;
+                        double centerMafsalBottomY = mafsal.BottomPos.Y;
+
+                        if (centerMafsalStartX <= mousePressedPosition.X && mousePressedPosition.X <= centerMafsalEndX && centerMafsalBottomY <= mousePressedPosition.Y && mousePressedPosition.Y <= centerMafsalTopY)
+                        {
+                            mafsal.IsSelected = true;
+
+                            selectedMafsalCenterPoint = mafsal.CenterPosition;
+                            selectedMafsalStartPoint = mafsal.StartPos;
+                            selectedMafsalEndPoint = mafsal.EndPos;
+
+                            Components.Lists.SelectionIndicators = new List<Entities.Rectengle>();
+                            SelectionIndicators.updateMafsalIndicators(mafsal);
+
+                            foreach (Entities.Rectengle indicator in Components.Lists.SelectionIndicators)
+                            {
+                                double indicatorStartX = indicator.StartPos.X;
+                                double indicatorEndX = indicator.EndPos.X;
+                                double indicatorTopY = indicator.TopPos.Y;
+                                double indicatorBottomY = indicator.BottomPos.Y;
+
+                                if (indicatorStartX <= currentMousePosition_MM.X && currentMousePosition_MM.X <= indicatorEndX && indicatorBottomY <= currentMousePosition_MM.Y && currentMousePosition_MM.Y <= indicatorTopY)
+                                {
+                                    indicator.IsSelected = true;
+                                }
+                                else
+                                {
+                                    indicator.IsSelected = false;
+                                }
+                            }
+
+                            if(Components.Lists.Profiles.Find(d => d.IsSelected == true) != null)
+                                Components.Lists.Profiles.Find(d => d.IsSelected == true).IsSelected = false;
+                        }
+                        else
+                        {
+                            mafsal.IsSelected = false;
+                        }
+                    }
+                }
+                if (Components.Lists.Profiles.Find(d => d.IsSelected == true) == null && Components.Lists.Mafsals.Find(d => d.IsSelected == true) == null)
+                {
+                    Components.Lists.SelectionIndicators.Clear();
+                }
+                updateFrame();
             }
         }
 

@@ -86,30 +86,30 @@ namespace SollawerGES.Components
 
                 if (distance > Configurations.SpaceProfil)
                 {
-                    currentProfile.CenterPosition.X -= distance - 20;
+                    currentProfile.CenterPosition.X -= distance + Configurations.SpaceProfil;
                 }
                 else if (distance < Configurations.SpaceProfil)
                 {
-                    currentProfile.CenterPosition.X += -distance + 20;
+                    currentProfile.CenterPosition.X += -distance - Configurations.SpaceProfil;
                 }
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).Last().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X + 300)
+            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).Last().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X)
             {
                 Components.Lists.Profiles.Add(addProfileNextTo(Components.Lists.Profiles.OrderBy(d => d.EndPos.X).Last(), 6000, "right"));
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X + 300)
+            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X)
             {
                 Components.Lists.Profiles.Remove(Components.Lists.Profiles.OrderBy(d => d.StartPos.X).Last());
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).First().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X - 300)
+            while (Components.Lists.Profiles.OrderBy(d => d.StartPos.X).First().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X)
             {
                 Components.Lists.Profiles.Add(addProfileNextTo(Components.Lists.Profiles.OrderBy(d => d.StartPos.X).First(), 6000, "left"));
             }
 
-            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X - 300)
+            while (Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X)
             {
                 Components.Lists.Profiles.Remove(Components.Lists.Profiles.OrderBy(d => d.EndPos.X).First());
             }

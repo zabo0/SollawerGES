@@ -12,6 +12,8 @@ namespace SollawerGES.Dimensions
     public class Dimension
     {
 
+        private int id;
+
         private Vector2 firstPoint;
 
         private Vector2 secondPoint;
@@ -25,8 +27,9 @@ namespace SollawerGES.Dimensions
         private List<Entities.Line> shapeLinesList;
 
 
-        public Dimension(Vector2 firstPoint, Vector2 secondPoint, Vector2 dimPosition)
+        public Dimension(int id, Vector2 firstPoint, Vector2 secondPoint, Vector2 dimPosition)
         {
+            this.ID = id;
             this.FirstPoint = firstPoint;
             this.SecondPoint = secondPoint;
             this.DimPosition = dimPosition;
@@ -36,6 +39,11 @@ namespace SollawerGES.Dimensions
             this.ShapeLinesList = DimensionManager.createShape(firstPoint, secondPoint, dimPosition);
         }
 
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         public double Lenght
         {

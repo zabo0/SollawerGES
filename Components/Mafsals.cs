@@ -35,6 +35,61 @@ namespace SollawerGES.Components
 			return list;
         }
 
+		public static void updateMafsals()
+		{
+            foreach (Entities.Rectengle currentMafsal in Components.Lists.Mafsals.OrderBy(d => d.ID).ToList().FindAll(d => d.ID > 1))
+            {
+                Entities.Rectengle previousMafsal = Components.Lists.Mafsals.Find(d => d.ID == currentMafsal.ID - 1);
+
+                double space = currentMafsal.CenterPosition.X - previousMafsal.CenterPosition.X;
+
+                if (space > Configurations.MaxMafsalSpace)
+                {
+                    currentMafsal.CenterPosition.X -= space - Configurations.MaxMafsalSpace;
+                }
+                else if (space < Configurations.MinMafsalSpace)
+                {
+                    currentMafsal.CenterPosition.X += -space + Configurations.MinMafsalSpace;
+                }
+            }
+
+            foreach (Entities.Rectengle currentMafsal in Components.Lists.Mafsals.OrderByDescending(d => d.ID).ToList().FindAll(d => d.ID < -1))
+            {
+                Entities.Rectengle previousMafsal = Components.Lists.Mafsals.Find(d => d.ID == currentMafsal.ID + 1);
+
+                double space = previousMafsal.CenterPosition.X - currentMafsal.CenterPosition.X;
+
+                if (space > Configurations.MaxMafsalSpace)
+                {
+                    currentMafsal.CenterPosition.X += space - Configurations.MaxMafsalSpace;
+                }
+                else if (space < Configurations.MinMafsalSpace)
+                {
+                    currentMafsal.CenterPosition.X -= -space + Configurations.MinMafsalSpace;
+                }
+            }
+
+            while (Components.Lists.Mafsals.OrderBy(d => d.EndPos.X).Last().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X)
+            {
+                Components.Lists.Mafsals.Add(addMafsalNextTo(Components.Lists.Mafsals.OrderBy(d => d.EndPos.X).Last(), (Configurations.MaxMafsalSpace + Configurations.MinMafsalSpace) / 2 , "right"));
+            }
+
+            while (Components.Lists.Mafsals.OrderBy(d => d.StartPos.X).Last().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == 1).EndPos.X)
+            {
+                Components.Lists.Mafsals.Remove(Components.Lists.Mafsals.OrderBy(d => d.StartPos.X).Last());
+            }
+
+            while (Components.Lists.Mafsals.OrderBy(d => d.StartPos.X).First().StartPos.X > Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X)
+            {
+                Components.Lists.Mafsals.Add(addMafsalNextTo(Components.Lists.Mafsals.OrderBy(d => d.StartPos.X).First(), (Configurations.MaxMafsalSpace + Configurations.MinMafsalSpace) / 2, "left"));
+            }
+
+            while (Components.Lists.Mafsals.OrderBy(d => d.EndPos.X).First().EndPos.X < Components.Lists.AsiksZ.First(d => d.ID == -1).StartPos.X)
+            {
+                Components.Lists.Mafsals.Remove(Components.Lists.Mafsals.OrderBy(d => d.EndPos.X).First());
+            }
+        }
+
 		public static List<Entities.Rectengle> createAllMafsals()
 		{
 			List<Entities.Rectengle> list = new List<Entities.Rectengle> ();

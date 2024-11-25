@@ -47,6 +47,9 @@ namespace SollawerGES
             textBox_widthMafsal.Text = Configurations.WidthMafsal.ToString();
             textBox_heightMafsal.Text = Configurations.HeightMafsal.ToString();
             textBox_actuatorDistanceMafsal.Text = Configurations.ActuatorDistanceMafsal.ToString();
+            textBox_minMafsalSpace.Text = Configurations.MinMafsalSpace.ToString();
+            textBox_maxMafsalSpace.Text = Configurations.MaxMafsalSpace.ToString();
+
 
             textBox_widthDirek.Text = Configurations.WidthDirek.ToString();
             textBox_heightDirek.Text = Configurations.HeightDirek.ToString();
@@ -91,6 +94,8 @@ namespace SollawerGES
             Configurations.WidthMafsal = double.Parse(textBox_widthMafsal.Text);
             Configurations.HeightMafsal = double.Parse(textBox_heightMafsal.Text);
             Configurations.ActuatorDistanceMafsal = double.Parse(textBox_actuatorDistanceMafsal.Text);
+            Configurations.MinMafsalSpace = double.Parse(textBox_minMafsalSpace.Text);
+            Configurations.MaxMafsalSpace = double.Parse(textBox_maxMafsalSpace.Text);
 
             Configurations.WidthDirek = double.Parse(textBox_widthDirek.Text);
             Configurations.HeightDirek = double.Parse(textBox_heightDirek.Text);

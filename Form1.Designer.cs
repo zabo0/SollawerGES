@@ -48,6 +48,7 @@
             this.checkBox_showCenterDirek = new System.Windows.Forms.CheckBox();
             this.checkBox_showMafsal = new System.Windows.Forms.CheckBox();
             this.checkBox_showAksBirl = new System.Windows.Forms.CheckBox();
+            this.checkBox_showProfileDimensions = new System.Windows.Forms.CheckBox();
             this.checkBox_showProfile = new System.Windows.Forms.CheckBox();
             this.checkBox_showAsikW = new System.Windows.Forms.CheckBox();
             this.checkBox_showAsikZ = new System.Windows.Forms.CheckBox();
@@ -63,7 +64,7 @@
             this.button_configureRealDPI = new System.Windows.Forms.Button();
             this.label_info = new System.Windows.Forms.Label();
             this.label_locationGlobalBigPX = new System.Windows.Forms.Label();
-            this.checkBox_showDimensions = new System.Windows.Forms.CheckBox();
+            this.checkBox_showMafsalDimensions = new System.Windows.Forms.CheckBox();
             this.panel_header.SuspendLayout();
             this.panel_drawingSmall.SuspendLayout();
             this.panel_drawingBig.SuspendLayout();
@@ -242,7 +243,8 @@
             this.panel_content.Controls.Add(this.checkBox_showCenterDirek);
             this.panel_content.Controls.Add(this.checkBox_showMafsal);
             this.panel_content.Controls.Add(this.checkBox_showAksBirl);
-            this.panel_content.Controls.Add(this.checkBox_showDimensions);
+            this.panel_content.Controls.Add(this.checkBox_showMafsalDimensions);
+            this.panel_content.Controls.Add(this.checkBox_showProfileDimensions);
             this.panel_content.Controls.Add(this.checkBox_showProfile);
             this.panel_content.Controls.Add(this.checkBox_showAsikW);
             this.panel_content.Controls.Add(this.checkBox_showAsikZ);
@@ -330,6 +332,18 @@
             this.checkBox_showAksBirl.Text = "Aks Birlestirici";
             this.checkBox_showAksBirl.UseVisualStyleBackColor = true;
             this.checkBox_showAksBirl.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            // 
+            // checkBox_showProfileDimensions
+            // 
+            this.checkBox_showProfileDimensions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showProfileDimensions.AutoSize = true;
+            this.checkBox_showProfileDimensions.Location = new System.Drawing.Point(1051, 95);
+            this.checkBox_showProfileDimensions.Name = "checkBox_showProfileDimensions";
+            this.checkBox_showProfileDimensions.Size = new System.Drawing.Size(142, 17);
+            this.checkBox_showProfileDimensions.TabIndex = 21;
+            this.checkBox_showProfileDimensions.Text = "Show Profile Dimensions";
+            this.checkBox_showProfileDimensions.UseVisualStyleBackColor = true;
+            this.checkBox_showProfileDimensions.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
             // 
             // checkBox_showProfile
             // 
@@ -497,18 +511,17 @@
             this.label_locationGlobalBigPX.Text = "0 / 0 px";
             this.label_locationGlobalBigPX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // checkBox_showDimensions
+            // checkBox_showMafsalDimensions
             // 
-            this.checkBox_showDimensions.AutoSize = true;
-            this.checkBox_showDimensions.Checked = true;
-            this.checkBox_showDimensions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_showDimensions.Location = new System.Drawing.Point(359, 116);
-            this.checkBox_showDimensions.Name = "checkBox_showDimensions";
-            this.checkBox_showDimensions.Size = new System.Drawing.Size(110, 17);
-            this.checkBox_showDimensions.TabIndex = 21;
-            this.checkBox_showDimensions.Text = "Show Dimensions";
-            this.checkBox_showDimensions.UseVisualStyleBackColor = true;
-            this.checkBox_showDimensions.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
+            this.checkBox_showMafsalDimensions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox_showMafsalDimensions.AutoSize = true;
+            this.checkBox_showMafsalDimensions.Location = new System.Drawing.Point(1051, 117);
+            this.checkBox_showMafsalDimensions.Name = "checkBox_showMafsalDimensions";
+            this.checkBox_showMafsalDimensions.Size = new System.Drawing.Size(144, 17);
+            this.checkBox_showMafsalDimensions.TabIndex = 21;
+            this.checkBox_showMafsalDimensions.Text = "Show Mafsal Dimensions";
+            this.checkBox_showMafsalDimensions.UseVisualStyleBackColor = true;
+            this.checkBox_showMafsalDimensions.CheckedChanged += new System.EventHandler(this.showComponentEventHandler);
             // 
             // Form1
             // 
@@ -583,7 +596,8 @@
         private System.Windows.Forms.CheckBox checkBox_showAsikZ;
         private System.Windows.Forms.Button button_editMode;
         private System.Windows.Forms.Label label_infoEdit;
-        private System.Windows.Forms.CheckBox checkBox_showDimensions;
+        private System.Windows.Forms.CheckBox checkBox_showProfileDimensions;
+        private System.Windows.Forms.CheckBox checkBox_showMafsalDimensions;
     }
 }
 
